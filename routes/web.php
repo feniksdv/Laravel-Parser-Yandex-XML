@@ -1,19 +1,37 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
-Route::get('/', function () {
-    return view('welcome');
+/* * * * * *
+* Главная  *
+* * * * * */
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+/* * * * * * *
+* Категории  *
+* * * * * * */
+Route::group(['prefix' => 'category'], function() {
+    Route::get('/', [CategoryController::class, 'index'])->name('category');
+    Route::get('/show/{id}', [CategoryController::class, 'show'])->where('id', '\d+')->name('category.show');
 });
 
-Route::get('/home', function () {
-    return "Домашняя страница";
+/* * * * * *
+* Новости  *
+* * * * * */
+Route::group(['prefix' => 'news'], function() {
+    Route::get('/', [NewsController::class, 'index'])->name('news');
+    Route::get('/show/{id}', [NewsController::class, 'show'])->where('id', '\d+')->name('news.show');
 });
 
-Route::get('/home/{slag}', function (string $slag) {
-    return "Домашняя страница для {$slag}";
-});
-
-Route::get('/about', function () {
-    return "О компании";
+/* * * * * *
+* Админка  *
+* * * * * */
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('news', AdminNewsController::class);
 });
