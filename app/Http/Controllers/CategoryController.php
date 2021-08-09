@@ -14,8 +14,8 @@ class CategoryController extends Controller
      */
     public function index() : view
     {
-        return view('category.index', [
-            'categories' => $this->getCategoryList()
+        return view('main.category.index', [
+            'listCategory' => $this->getCategoryList()
         ]);
     }
 
@@ -37,8 +37,9 @@ class CategoryController extends Controller
             abort(404);
         }
 
-        return view('category.show', [
-            'newsList' => $newsList
+        return view('main.category.show', [
+            'listNews' => $newsList,
+            'listCategory' => $this->getCategoryList()
         ]);
     }
 }

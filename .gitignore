@@ -14,3 +14,14 @@ yarn-error.log
 /.idea
 /.vscode
 storage/debugbar/
+public/front/images/
+public/plugins/
+public/front/scss/
+public/front/fonts/
+public/front/buznex/
+public/dist/img/
+public/dist/css/
+public/front/js/
+public/front/css/
+public/dist/js/
+public/front/php/contact.php

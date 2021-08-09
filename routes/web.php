@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\HomeController;
@@ -32,6 +33,7 @@ Route::group(['prefix' => 'news'], function() {
 * Админка  *
 * * * * * */
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('news', AdminNewsController::class);
 });

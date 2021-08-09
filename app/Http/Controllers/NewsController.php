@@ -14,8 +14,9 @@ class NewsController extends Controller
      */
     public function index() : view
     {
-        return view('news.index', [
-            'news' => $this->getNewsList()
+        return view('main.news.index', [
+            'listNews' => $this->getNewsList(),
+            'listCategory' => $this->getCategoryList()
         ]);
     }
 
@@ -37,8 +38,9 @@ class NewsController extends Controller
             abort(404);
         }
 
-        return view('news.show', [
-            'newsList' => $newsList
+        return view('main.news.show', [
+            'listNews' => $newsList,
+            'listCategory' => $this->getCategoryList()
         ]);
     }
 }

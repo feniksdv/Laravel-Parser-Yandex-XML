@@ -3,28 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return response("Список категорий", 200);
+        return view("admin.categories.index", ['listCategories' => $this->getCategoryList()]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -41,23 +42,36 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Application|Factory|View
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
+        $newsList = [];
+        foreach($this->getCategoryList() as $news) {
+            if($news['id'] === $id) {
+                $newsList = $news;
+            }
+        }
+
+        if(empty($newsList)) {
+            abort(404);
+        }
+
+        return view('news.show', [
+            'newsList' => $newsList
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Application|Factory|View
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+        return view('admin.categories.edit', ['listCategories' => $this->getCategoryList(),'id' => $id]);
     }
 
     /**

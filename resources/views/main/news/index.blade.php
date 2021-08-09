@@ -8,25 +8,25 @@
                     <div class="row mb-n7 row-cols-1 row-cols-sm-2">
                         <!-- single blog start -->
                         @foreach($listNews as $news)
-                        <div class="col mb-7">
-                            <div class="blog-card">
-                                <div class="thumb bg-light p-0 text-center">
-                                    <a href="{{ route('news.show', ['id' => $news['id']]) }}">
-                                        <img src="{{ asset('front/images/blog/4.png') }}" alt="img" />
-                                    </a>
-                                </div>
-                                <div class="blog-content">
-                                    <a href="{{ route('news.show', ['id' => $news['id']]) }}">
-                                        <span class="blog-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</span>
-                                    </a>
-                                    <h3 class="title">
-                                        <a href="{{ route('news.show', ['id' => $news['id']]) }}">{{ $news['title'] }}</a>
-                                    </h3>
+                            <div class="col mb-7">
+                                <div class="blog-card">
+                                    <div class="thumb bg-light p-0 text-center">
+                                        <a href="{{ route('news.show', ['id' => $news['id']]) }}">
+                                            <img src="{{ asset('front/images/blog/4.png') }}" alt="img" />
+                                        </a>
+                                    </div>
+                                    <div class="blog-content">
+                                        <a href="{{ route('news.show', ['id' => $news['id']]) }}">
+                                            <span class="blog-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</span>
+                                        </a>
+                                        <h3 class="title">
+                                            <a href="{{ route('news.show', ['id' => $news['id']]) }}">{{ $news['title'] }}</a>
+                                        </h3>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
-                        <!-- single blog end -->
+                    <!-- single blog end -->
                     </div>
                     <div class="row mt-10">
                         <div class="col-12">
