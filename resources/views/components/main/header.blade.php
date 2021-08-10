@@ -68,17 +68,17 @@
             <div class="col text-end">
                 <nav class="main-menu d-none d-lg-block">
                     <ul class="d-flex">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{{ route('home') }}"><strong>Главная</strong></a></li>
                         <li><a href="about.html">About</a></li>
                         <li>
-                            <a href="#">Service</a>
+                            <a href="#"><strong>Сервис</strong></a>
 
                             <ul class="sub-menu">
                                 <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="service.html">Service</a>
+                                    <a class="sub-menu-link" href="{{ route('category') }}">Рубрики</a>
                                 </li>
                                 <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="single-service.html">single service</a>
+                                    <a class="sub-menu-link" href="{{ route('news') }}">Новости</a>
                                 </li>
                             </ul>
                         </li>
@@ -110,7 +110,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="{{ route('contact') }}"><strong>Контакты</strong></a></li>
                     </ul>
                 </nav>
                 <button class="toggle" data-bs-toggle="modal" data-bs-target="#exampleModal">

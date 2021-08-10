@@ -5,10 +5,27 @@
             <!-- Banner-Content Start -->
             <div class="col-md-6">
                 <div class="banner-content banner-padding">
-                    <h3 class="title">Blog Post</h3>
+                    <h3 class="title">
+                        @if(request()->is('news'))
+                            Новости
+                        @elseif(request()->is('category'))
+                            Рубрики
+                        @elseif(request()->is('contact'))
+                            Контакты
+                        @else
+                            Главная
+                        @endif
+                    </h3>
                     <p>
-                        Pleasure rationally encounter consequences <br />
-                        are extremely painful great oppurtunity
+                        @if(request()->is('news'))
+                            Все новости
+                        @elseif(request()->is('category'))
+                            Если перейти в рубрику, <br>то выведутся новости этой рубрики
+                        @elseif(request()->is('contact'))
+                            Задайте свой вопрос, <br>через форму обратной связи
+                        @else
+                            Агрегатор новостей
+                        @endif
                     </p>
                 </div>
             </div>

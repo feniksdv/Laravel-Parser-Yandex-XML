@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function __invoke(Request $request)
     {
-        $listNews = count($this->getNewsList());
-        $listCategories = count($this->getCategoryList());
-        return view('admin.dashboard.index', ['listNews' => $listNews, 'listCategories' => $listCategories]);
+        return view('admin.dashboard.index', [
+            'listNews' => count($this->getNewsList()),
+            'listCategories' => count($this->getCategoryList())
+        ]);
     }
 }

@@ -25,7 +25,7 @@
                 <li class="nav-item menu-open">
                     <ul class="nav nav">
                         <li class="nav-item">
-                            <a href="{{ route('admin.dashboard') }}" class="nav-link active">
+                            <a href="{{ route('admin.dashboard') }}" class="nav-link @if(request()->routeIs('admin.dashboard')) active @endif">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -33,7 +33,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link @if(request()->routeIs('admin.categories.*')) active @endif">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             Категории
@@ -56,7 +56,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link @if(request()->routeIs('admin.news.*')) active @endif">
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>
                             Новости

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\HomeController;
@@ -9,9 +10,10 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 /* * * * * *
-* Главная  *
+* Фронт  *
 * * * * * */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 /* * * * * * *
 * Категории  *
@@ -33,7 +35,7 @@ Route::group(['prefix' => 'news'], function() {
 * Админка  *
 * * * * * */
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('news', AdminNewsController::class);
 });
