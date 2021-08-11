@@ -212,23 +212,35 @@ class Controller extends BaseController
      */
     public function getOrder(): array
     {
-        return [
-            [
-                'id' => '0',
-                'name' => 'Антон',
-                'tel' => '8999656887',
-                'email' => 'qwe@qewr.ru',
-                'sms' => 'Здравствуйте, мне лень писать, по этому позвоните мне и я расскажу, чт оя хочу.',
-                'date' => date('d-m-Y')
-            ],
-            [
-                'id' => '1',
-                'name' => 'Иван',
-                'tel' => '89992525285',
-                'email' => 'qwe@local.ru',
-                'sms' => 'Здравствуйте, Хочу скачать Интернет. Данные предоставить в Excel. Сроки - Как можно быстрее',
-                'date' => date('d-m-Y')
-            ],
-        ];
+        $dir = '/var/www/html/storage/app/public/';
+        $_files = scandir($dir);
+        unset($_files[0],$_files[1],$_files[2]);
+        $files = array_values($_files);
+        $buffer=[];
+        foreach ($files as $file) {
+            $handle = fopen($dir.$file, "r");
+            if ($handle) {
+                while (($_buffer = fgets($handle)) !== false) {
+                    $buffer[$file][] = $_buffer;
+                }
+                if (!feof($handle)) {
+                    echo "Ошибка: fgets() неожиданно потерпел неудачу\n";
+                }
+                fclose($handle);
+            }
+        }
+        $listOrders=[];
+        $i=0;
+        foreach ($buffer as $item) {
+            $listOrders[] = [
+                'id' => $i,
+                'name' => $item[0],
+                'tel' => $item[1],
+                'email' => $item[2],
+                'content' => implode("\n", array_slice($item, 3))
+            ];
+            $i++;
+        }
+        return $listOrders;
     }
 }

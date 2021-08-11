@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+
 
 class OrderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @param Request $request
+     * @return Application|Factory|View
      */
     public function index(Request $request)
     {
@@ -29,12 +36,20 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //Сохраняем в БД отправленные данные через форму контактов
+        //Сохраняем данные в файл, если тел. такой же то дописываем в конец файла
+        Storage::append(
+            "/public/{$request->input('tel')}.log",
+            $request->input('name')."\n".
+            $request->input('tel')."\n".
+            $request->input('email')."\n".
+            $request->input('massage')."\n
+            *********************************************************************"
+        );
         return response($request->input('name').", Заказ обрабатывается, ожидайте!");
     }
 
@@ -63,7 +78,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
      * @return Response
      */
@@ -75,11 +90,19 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param $id
+     * @return Application|Factory|View
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $dir = '/var/www/html/storage/app/public/';
+        $_files = scandir($dir);
+        unset($_files[0],$_files[1],$_files[2]);
+        $files = array_values($_files);
+
+        $path = $dir.$files[$id];
+        unlink($path);
+
+        return view('admin.order.index', ['listOrders'=>$this->getOrder()]);
     }
 }

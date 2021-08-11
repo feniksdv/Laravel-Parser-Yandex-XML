@@ -23,7 +23,7 @@
                             <input type="text" class="form-control" id="name" name="name" placeholder="Ваше имя*" value="{{ old('name') }}" />
                         </div>
                         <div class="col-12 col-sm-6 mb-7">
-                            <input type="tel" class="form-control" id="phone" name="number" placeholder="Ваш телефон*" value="{{ old('number') }}" />
+                            <input type="tel" class="form-control" id="tel" name="tel" placeholder="Ваш телефон*" value="{{ old('tel') }}" />
                         </div>
                         <div class="col-12 col-sm-6 mb-7">
                             <input type="text" class="form-control" id="email" name="email" placeholder="Ваш Email*" value="{{ old('email') }}" />

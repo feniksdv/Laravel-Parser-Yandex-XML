@@ -64,14 +64,20 @@
                             <tr>
                                 <td>{{ $order['id'] }}</td>
                                 <td>{{ $order['name'] }}</td>
-                                <td>{{ $order['sms'] }}</td>
-                                <td>{{ $order['email']." | ".$order['tel']}}</td>
-                                <td>{{ $order['date'] }}</td>
+                                <td>{{ $order['tel']." | ".$order['email'] }}</td>
+                                <td>{{ $order['content'] }}</td>
+                                <td>{{ now()->format('d-m-Y') }}</td>
                                 <td class="project-actions text-right">
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.order.destroy', ['order' => $order['id']]) }}">
-                                        <i class="fas fa-trash"></i>
-                                        Удалить
-                                    </a>
+                                    <form action="{{ route('admin.order.destroy', ['order' => $order['id']]) }}" method="post">
+                                        @method('delete')
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                            Удалить
+                                        </button>
+
+                                    </form>
+
                                 </td>
                             </tr>
                         @empty
