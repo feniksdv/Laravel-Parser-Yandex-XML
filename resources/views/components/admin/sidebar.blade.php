@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
+    <a href="{{ route('admin.dashboard') }}" class="brand-link">
         <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Админка</span>
     </a>
@@ -76,6 +76,40 @@
                             <a href="{{ route('admin.news.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Добавить новость</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link @if(request()->routeIs('admin.contact.*')) active @endif">
+                        <i class="nav-icon fas fa-sms"></i>
+                        <p>
+                            Сообщения
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.contact.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Все сообщения</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link @if(request()->routeIs('admin.order.*')) active @endif">
+                        <i class="nav-icon fab fa-jedi-order"></i>
+                        <p>
+                            Заказы
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.order.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Все заказы</p>
                             </a>
                         </li>
                     </ul>

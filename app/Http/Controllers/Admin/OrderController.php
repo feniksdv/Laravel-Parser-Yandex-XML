@@ -3,30 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class CategoryController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return view("admin.categories.index", ['listCategories' => $this->getCategoryList()]);
+        return view('admin.order.index', ['listOrders'=>$this->getOrder()]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Application|Factory|View
+     * @return Response
      */
     public function create()
     {
-        return view('admin.categories.create');
+        //
     }
 
     /**
@@ -37,42 +34,30 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Сохраняем в БД отправленные данные через форму контактов
+        return response($request->input('name').", Заказ обрабатывается, ожидайте!");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return Application|Factory|View
+     * @param  int  $id
+     * @return Response
      */
-    public function show(int $id)
+    public function show($id)
     {
-        $newsList = [];
-        foreach($this->getCategoryList() as $news) {
-            if($news['id'] === $id) {
-                $newsList = $news;
-            }
-        }
-
-        if(empty($newsList)) {
-            abort(404);
-        }
-
-        return view('news.show', [
-            'newsList' => $newsList
-        ]);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     * @return Application|Factory|View
+     * @param  int  $id
+     * @return Response
      */
-    public function edit(int $id)
+    public function edit($id)
     {
-        return view('admin.categories.edit', ['listCategories' => $this->getCategoryList(),'id' => $id]);
+        //
     }
 
     /**

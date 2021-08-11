@@ -179,4 +179,56 @@ class Controller extends BaseController
             ],
         ];
     }
+
+    /**
+     * Возвращает массив со списком сообщений
+     *
+     * @return array[]
+     */
+    public function getMessages(): array
+    {
+        return [
+            [
+                'id' => '0',
+                'name' => 'Антон',
+                'email' => 'qwe@ef.ru',
+                'sms' => 'Здравствуйте, а сколько стоит ваши услуги?',
+                'date' => date('d-m-Y')
+            ],
+            [
+                'id' => '1',
+                'name' => 'Иван',
+                'email' => 'qwsve@svsvef.ru',
+                'sms' => 'Здравствуйте, а есть пример готовой работы?',
+                'date' => date('d-m-Y')
+            ],
+        ];
+    }
+
+    /**
+     * Возвращает массив со списком заказов
+     *
+     * @return array[]
+     */
+    public function getOrder(): array
+    {
+        return [
+            [
+                'id' => '0',
+                'name' => 'Антон',
+                'tel' => '8999656887',
+                'email' => 'qwe@qewr.ru',
+                'sms' => 'Здравствуйте, мне лень писать, по этому позвоните мне и я расскажу, чт оя хочу.',
+                'date' => date('d-m-Y')
+            ],
+            [
+                'id' => '1',
+                'name' => 'Иван',
+                'tel' => '89992525285',
+                'email' => 'qwe@local.ru',
+                'sms' => 'Здравствуйте, Хочу скачать Интернет. Данные предоставить в Excel. Сроки - Как можно быстрее',
+                'date' => date('d-m-Y')
+            ],
+        ];
+    }
 }
