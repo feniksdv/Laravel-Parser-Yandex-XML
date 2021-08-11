@@ -3,7 +3,7 @@
     <div class="modal-dialog offcanvas-dialog">
         <div class="modal-content">
             <div class="modal-header offcanvas-header">
-                <a class="offcanvas-logo" href="index.html"><img src="{{ asset('front/images/logo/logo.png') }}" alt="logo" /></a>
+                <a class="offcanvas-logo" href="{{ route('home') }}"><img src="{{ asset('front/images/logo/logo.png') }}" alt="logo" /></a>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -11,14 +11,12 @@
 
             <nav id="offcanvasNav" class="offcanvas-menu">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><a href="{{ route('home') }}">Главная</a></li>
                     <li>
-                        <a href="javascript:void(0)">Service</a>
+                        <a href="javascript:void(0)">Услуги</a>
 
                         <ul>
-                            <li><a href="service.html">service</a></li>
-                            <li><a href="single-service.html">single service</a></li>
+                            <li><a href="{{ route('order') }}">Заказать выгрузку</a></li>
                         </ul>
                     </li>
                     <li>
@@ -32,18 +30,18 @@
                         <a href="javascript:void(0)">Blog</a>
                         <ul>
                             <li>
-                                <a href="blog.html">blog</a>
+                                <a href="blog.html">Блог</a>
                             </li>
                             <li>
-                                <a href="blog-grid-left-sidebar.html">blog grid left sidebar</a>
+                                <a href="{{ route('category') }}">Рубрики</a>
+                            </li>
                             </li>
                             <li>
-                                <a href="blog-grid-right-sidebar.html">blog grid right sidebar</a>
+                                <a href="{{ route('news') }}">Новости</a>
                             </li>
-                            <li><a href="blog-details.html">blog details</a></li>
                         </ul>
                     </li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="{{ route('contact') }}">Контакты</a></li>
                 </ul>
 
 
@@ -59,7 +57,7 @@
             <!-- Header Logo Start -->
             <div class="col">
                 <div class="header-logo">
-                    <a href="index.html"><img src="{{ asset('front/images/logo/logo.png') }}" alt="Site Logo" /></a>
+                    <a href="{{ route('home') }}"><img src="{{ asset('front/images/logo/logo.png') }}" alt="Site Logo" /></a>
                 </div>
             </div>
             <!-- Header Logo End -->
@@ -69,16 +67,11 @@
                 <nav class="main-menu d-none d-lg-block">
                     <ul class="d-flex">
                         <li><a href="{{ route('home') }}"><strong>Главная</strong></a></li>
-                        <li><a href="about.html">About</a></li>
                         <li>
-                            <a href="#"><strong>Сервис</strong></a>
-
+                            <a href="#"><strong>Услуги</strong></a>
                             <ul class="sub-menu">
                                 <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="{{ route('category') }}">Рубрики</a>
-                                </li>
-                                <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="{{ route('news') }}">Новости</a>
+                                    <a class="sub-menu-link" href="{{ route('order') }}">Заказать выгрузку</a>
                                 </li>
                             </ul>
                         </li>
@@ -94,19 +87,13 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#">Blog</a>
+                            <a href="#"><strong>Блог</strong></a>
                             <ul class="sub-menu">
                                 <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="blog.html">Blog</a>
+                                    <a class="sub-menu-link" href="{{ route('category') }}">Рубрики</a>
                                 </li>
                                 <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="blog-grid-left-sidebar.html">blog grid left sidebar</a>
-                                </li>
-                                <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="blog-grid-right-sidebar.html">blog grid right sidebar</a>
-                                </li>
-                                <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="blog-details.html">blog details</a>
+                                    <a class="sub-menu-link" href="{{ route('news') }}">Новости</a>
                                 </li>
                             </ul>
                         </li>

@@ -7,7 +7,7 @@
                 <div class="col-lg-3 col-sm-6 mb-7">
                     <div class="footer-widget">
                         <a class="footer-logo mb-9" href="index.html">
-                            <img src="{{ asset('front/images/logo/logo-footer.png') }}" alt="footer-logo" />
+                            <img src="{{ asset('front/images/logo/logo.png') }}" alt="footer-logo" />
                         </a>
                         <p>
                             Pleasure rationally encounter consequences that extremely painful.
