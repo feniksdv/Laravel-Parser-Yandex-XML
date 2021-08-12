@@ -14,7 +14,7 @@
     <!-- Modal -->
     <x-main.header></x-main.header>
     <!-- Banner Section Start -->
-    <x-main.baner></x-main.baner>
+    <x-main.baner :listCategory="$listCategory" :id="$id"></x-main.baner>
     <!-- Banner Section End -->
     <!-- Blog Section Start -->
         @yield('content')
