@@ -18,7 +18,7 @@ class Controller extends BaseController
      *
      * @return array[]
      */
-    protected function getCategoryList(): array
+    public function getCategoryList(): array
     {
         return [
             [

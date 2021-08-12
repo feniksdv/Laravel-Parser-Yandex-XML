@@ -8,6 +8,8 @@
                     <h3 class="title">
                         @if(request()->is('news'))
                             Новости
+                        @elseif(request()->routeIs('news.*'))
+                            Статья
                         @elseif(request()->is('category'))
                             Рубрики
                         @elseif(request()->routeIs('category.*'))

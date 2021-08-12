@@ -16,7 +16,8 @@ class NewsController extends Controller
     {
         return view('main.news.index', [
             'listNews' => $this->getNewsList(),
-            'listCategory' => $this->getCategoryList()
+            'listCategory' => $this->getCategoryList(),
+            'id' => 0
         ]);
     }
 
@@ -40,7 +41,8 @@ class NewsController extends Controller
 
         return view('main.news.show', [
             'listNews' => $newsList,
-            'listCategory' => $this->getCategoryList()
+            'listCategory' => $this->getCategoryList(),
+            'id' => $id
         ]);
     }
 }
