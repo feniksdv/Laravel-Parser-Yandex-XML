@@ -82,7 +82,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5">Категорий не найдено</td>
+                                <td colspan="5">Заказов не найдено</td>
                             </tr>
                         @endforelse
                         </tbody>

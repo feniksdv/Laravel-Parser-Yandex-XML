@@ -11,7 +11,9 @@ class DashboardController extends Controller
     {
         return view('admin.dashboard.index', [
             'listNews' => count($this->getNewsList()),
-            'listCategories' => count($this->getCategoryList())
+            'listCategories' => count($this->getCategoryList()),
+            'listOrder' => count($this->getOrder()),
+            'listMessages' => count($this->getMessages())
         ]);
     }
 }
