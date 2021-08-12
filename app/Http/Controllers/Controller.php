@@ -185,7 +185,7 @@ class Controller extends BaseController
      *
      * @return array[]
      */
-    public function getMessages(): array
+    protected function getMessages(): array
     {
         return [
             [
@@ -210,7 +210,7 @@ class Controller extends BaseController
      *
      * @return array[]
      */
-    public function getOrder(): array
+    protected function getOrder(): array
     {
         $dir = '/var/www/html/storage/app/public/';
         $_files = scandir($dir);

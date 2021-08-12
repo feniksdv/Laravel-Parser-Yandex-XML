@@ -7,7 +7,7 @@
             <div class="col-xl-8 col-lg-8 mb-7">
                 <div class="row mb-n7 row-cols-1 row-cols-sm-2">
                     <!-- single blog start -->
-                    @foreach($listCategory as $category)
+                    @forelse($listCategory as $category)
                     <div class="col mb-7">
                         <div class="blog-card">
                             <div class="thumb bg-light p-0 text-center">
@@ -25,7 +25,15 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    @empty
+                        <div class="col mb-7">
+                            <div class="blog-card">
+                                <div class="blog-content">
+                                    <p>Данных нет</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforelse
                     <!-- single blog end -->
                 </div>
                 <div class="row mt-10">

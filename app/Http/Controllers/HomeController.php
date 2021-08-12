@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('welcome', ['listNews' => $this->getNewsList(), 'listCategory' => $this->getCategoryList()]);
+        return view('home', ['listNews' => $this->getNewsList(), 'listCategory' => $this->getCategoryList()]);
     }
 }
