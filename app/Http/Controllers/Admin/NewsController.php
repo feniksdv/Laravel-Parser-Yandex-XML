@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,11 +13,16 @@ use Illuminate\Http\Response;
 class NewsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Выводит список всех новостей
+     *
+     * @return View
      */
-    public function index()
+    public function index(): view
     {
-        return view('admin.news.index', ['listNews'=>$this->getNewsList()]);
+        $objNews = new News();
+        return view('admin.news.index', [
+            'listNews'=>$objNews->getNews()
+        ]);
     }
 
     /**

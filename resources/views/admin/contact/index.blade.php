@@ -55,6 +55,9 @@
                             <th style="width: 10%" class="text-center">
                                 Дата добавления
                             </th>
+                            <th style="width: 10%" class="text-center">
+                                Telegram
+                            </th>
                             <th style="width: 20%">
                             </th>
                         </tr>
@@ -62,13 +65,14 @@
                         <tbody>
                         @forelse($listMessages as $message)
                             <tr>
-                                <td>{{ $message['id'] }}</td>
-                                <td>{{ $message['name'] }}</td>
-                                <td>{{ $message['email'] }}</td>
-                                <td>{{ $message['sms'] }}</td>
-                                <td>{{ $message['date'] }}</td>
+                                <td>{{ $message->id }}</td>
+                                <td>{{ $message->name }}</td>
+                                <td>{{ $message->email }}</td>
+                                <td>{{ mb_substr($message->content, 0, 100).'...' }}</td>
+                                <td>{{ $message->tel }}</td>
+                                <td>{{ $message->telegram }}</td>
                                 <td class="project-actions text-right">
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.contact.destroy', ['contact' => $message['id']]) }}">
+                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.contact.destroy', ['contact' => $message->id]) }}">
                                         <i class="fas fa-trash"></i>
                                         Удалить
                                     </a>

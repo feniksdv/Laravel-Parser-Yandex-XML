@@ -3,17 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Message;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ContactController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Выводит список всех сообщений
+     *
+     * @param Request $request
+     * @return view
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
-        return view('admin.contact.index', ['listMessages'=>$this->getMessages()]);
+        $objMessage = new Message();
+        return view('admin.contact.index', [
+            'listMessages'=>$objMessage->getMessages()
+        ]);
     }
 
     /**

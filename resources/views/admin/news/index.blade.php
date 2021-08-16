@@ -62,25 +62,25 @@
                         <tbody>
                         @forelse($listNews as $news)
                             <tr>
-                                <td>{{ $news['id'] }}</td>
-                                <td>{{ $news['title'] }}</td>
-                                <td>{{ $news['description'] }}</td>
+                                <td>{{ $news->id }}</td>
+                                <td>{{ $news->title }}</td>
+                                <td>{{ mb_substr($news->content, 0, 156).'...' }}</td>
                                 <td class="project-state">
                                     <span class="badge badge-success">Опубликована</span>
                                 </td>
                                 <td>{{ now()->format('d-m-Y H:m') }}</td>
                                 <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.news.show', ['news' => $news['id']]) }}">
+                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.news.show', ['news' => $news->id]) }}">
                                         <i class="fas fa-folder">
                                         </i>
                                         Смотреть
                                     </a>
-                                    <a class="btn btn-info btn-sm" href="{{ route('admin.news.edit', ['news' => $news['id']]) }}">
+                                    <a class="btn btn-info btn-sm" href="{{ route('admin.news.edit', ['news' => $news->id]) }}">
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Править
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.news.destroy', ['news' => $news['id']]) }}">
+                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.news.destroy', ['news' => $news->id]) }}">
                                         <i class="fas fa-trash">
                                         </i>
                                         Удалить

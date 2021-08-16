@@ -62,13 +62,13 @@
                         <tbody>
                         @forelse($listOrders as $order)
                             <tr>
-                                <td>{{ $order['id'] }}</td>
-                                <td>{{ $order['name'] }}</td>
-                                <td>{{ $order['tel']." | ".$order['email'] }}</td>
-                                <td>{{ $order['content'] }}</td>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ $order->name }}</td>
+                                <td>{{ $order->tel." | ".$order->email }}</td>
+                                <td>{{ mb_substr($order->content, 0, 100).'...' }}</td>
                                 <td>{{ now()->format('d-m-Y') }}</td>
                                 <td class="project-actions text-right">
-                                    <form action="{{ route('admin.order.destroy', ['order' => $order['id']]) }}" method="post">
+                                    <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="post">
                                         @method('delete')
                                         @csrf
                                         <button type="submit" class="btn btn-danger">

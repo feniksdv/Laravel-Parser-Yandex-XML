@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -10,12 +12,15 @@ class CategoryController extends Controller
     /**
      * Показать все категории
      *
+     * @param Request $request
      * @return View
      */
-    public function index() : view
+    public function index(Request $request) : view
     {
+        $objCategory = new Category();
+
         return view('main.category.index', [
-            'listCategory' => $this->getCategoryList(),
+            'listCategory' => $objCategory->getCategories(),
             'id' => 0
         ]);
     }
@@ -24,23 +29,16 @@ class CategoryController extends Controller
      * Показывает список новостей в конкретной категории
      *
      * @param int $id
+     * @return View
      */
-    public function show(int $id)
+    public function show(int $id) : view
     {
-        $newsList = [];
-        foreach($this->getNewsList() as $news) {
-            if($news['idCategory'] === $id) {
-                $newsList[] = $news;
-            }
-        }
-
-        if(empty($newsList)) {
-            abort(404);
-        }
+        $objNews = new News();
+        $objCategory = new Category();
 
         return view('main.category.show', [
-            'listNews' => $newsList,
-            'listCategory' => $this->getCategoryList(),
+            'listNews' => $objNews->getNews(),
+            'listCategory' => $objCategory->getCategories(),
             'id' => $id
         ]);
     }

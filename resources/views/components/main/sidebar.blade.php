@@ -23,8 +23,8 @@
                 <ul class="list-group list-group-flush">
                     @forelse ($listCategory as $category)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="{{ route('category.show', ['id' => $category['id']]) }}">
-                                {{ $category['title'] }}
+                            <a href="{{ route('category.show', ['id' => $category->id]) }}">
+                                {{ $category->title }}
                             </a>
                             <span>{{ count($listCategory) }}</span>
                         </li>

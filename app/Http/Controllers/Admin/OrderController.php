@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Order;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,12 +16,18 @@ use Illuminate\Support\Facades\Storage;
 class OrderController extends Controller
 {
     /**
+     * Выводит весь список заказов
+     *
      * @param Request $request
-     * @return Application|Factory|View
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
-        return view('admin.order.index', ['listOrders'=>$this->getOrder()]);
+        $objOrder = new Order();
+
+        return view('admin.order.index', [
+            'listOrders'=>$objOrder->getOrders()
+        ]);
     }
 
     /**

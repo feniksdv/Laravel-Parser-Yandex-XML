@@ -16,10 +16,10 @@
                     <!-- blog-details-thumb -->
                     <p class="blog-details-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</p>
                     <h3 class="blog-details-title">
-                        {{ $listNews['title'] }}
+                        {{ $listNews->title }}
                     </h3>
                     <p class="pb-2">
-                        {{ $listNews['description'] }}
+                        {{ $listNews->content }}
                     </p>
                     <h2>ОБРАЗЕЦ</h2>
                     <!-- blog-details-list start -->

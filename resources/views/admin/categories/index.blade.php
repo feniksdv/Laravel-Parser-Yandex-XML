@@ -59,22 +59,22 @@
                         <tbody>
                         @forelse($listCategories as $category)
                             <tr>
-                                <td>{{ $category['id'] }}</td>
-                                <td>{{ $category['title'] }}</td>
-                                <td>{{ $category['description'] }}</td>
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->title }}</td>
+                                <td>{{ $category->content }}</td>
                                 <td>{{ now()->format('d-m-Y H:m') }}</td>
                                 <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.categories.show', ['category' => $category['id']]) }}">
+                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.categories.show', ['category' => $category->id]) }}">
                                         <i class="fas fa-folder">
                                         </i>
                                         Смотреть
                                     </a>
-                                    <a class="btn btn-info btn-sm" href="{{ route('admin.categories.edit', ['category' => $category['id']]) }}">
+                                    <a class="btn btn-info btn-sm" href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Править
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.categories.destroy', ['category' => $category['id']]) }}">
+                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.categories.destroy', ['category' => $category->id]) }}">
                                         <i class="fas fa-trash">
                                         </i>
                                         Удалить

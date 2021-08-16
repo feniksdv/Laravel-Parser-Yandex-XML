@@ -11,16 +11,16 @@
                     <div class="col mb-7">
                         <div class="blog-card">
                             <div class="thumb bg-light p-0 text-center">
-                                <a href="{{ route('news.show', ['id' => $news['id']]) }}">
+                                <a href="{{ route('news.show', ['id' => $news->id]) }}">
                                     <img src="{{ asset('front/images/blog/4.png') }}" alt="img" />
                                 </a>
                             </div>
                             <div class="blog-content">
-                                <a href="{{ route('news.show', ['id' => $news['id']]) }}">
+                                <a href="{{ route('news.show', ['id' => $news->id]) }}">
                                     <span class="blog-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</span>
                                 </a>
                                 <h3 class="title">
-                                    <a href="{{ route('news.show', ['id' => $news['id']]) }}">{{ $news['title'] }}</a>
+                                    <a href="{{ route('news.show', ['id' => $news->id]) }}">{{ $news->title }}</a>
                                 </h3>
                             </div>
                         </div>
