@@ -24,15 +24,15 @@ class PagesSeeder extends Seeder
      */
     public function getData() : array
     {
-        $faker = Factory::create();
+        $faker = Factory::create('ru_RU');
         $data = [];
         for($i=0; $i < 10; $i++) {
             $data[] = [
-                'title' => $faker->sentence(3,10),
-                'content' => $faker->text(),
+                'title' => $faker->realText(10),
+                'content' => $faker->realText(random_int(1000,5000)),
                 'status_id' => random_int(1,3),
-                'seo_title' =>$faker->sentence(3,10),
-                'seo_description' => $faker->text(50),
+                'seo_title' =>$faker->realText(10),
+                'seo_description' => $faker->realText(random_int(100,250)),
             ];
         }
 

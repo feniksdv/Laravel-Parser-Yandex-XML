@@ -24,7 +24,7 @@ class StatusSeeder extends Seeder
      */
     public function getData() : array
     {
-        $faker = Factory::create();
+        $faker = Factory::create('ru_RU');
         $status = [
             'Черновик',
             'На доработку',

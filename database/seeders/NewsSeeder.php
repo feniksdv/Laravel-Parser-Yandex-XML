@@ -23,17 +23,17 @@ class NewsSeeder extends Seeder
      */
     public function getData() : array
     {
-        $faker = Factory::create();
+        $faker = Factory::create('ru_RU');
         $data = [];
         for($i=0; $i < 400; $i++) {
             $data[] = [
                 'category_id' => random_int(1,10),
                 'user_id' => 1,
-                'title' => $faker->sentence(3,10),
-                'content' => $faker->text(),
+                'title' => $faker->realText(10),
+                'content' => $faker->realText(random_int(1000,5000)),
                 'status_id' => random_int(1,3),
-                'seo_title' =>$faker->sentence(3,10),
-                'seo_description' => $faker->text(50),
+                'seo_title' =>$faker->realText(10),
+                'seo_description' => $faker->realTextBetween(),
             ];
         }
 

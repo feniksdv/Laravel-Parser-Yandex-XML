@@ -24,7 +24,7 @@ class UsersSeeder extends Seeder
      */
     public function getData() : array
     {
-        $faker = Factory::create();
+        $faker = Factory::create('ru_RU');
         $data = [];
         for($i=0; $i < 10; $i++) {
             $data[] = [
