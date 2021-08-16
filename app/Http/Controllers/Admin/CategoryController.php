@@ -60,7 +60,8 @@ class CategoryController extends Controller
 
         return view('main.category.show', [
             'listCategory' => $objCategory->getCategories(),
-            'listNews' => $objNews->getNewsByIdCategory($id)
+            'listNews' => $objNews->getNewsByIdCategory($id),
+            'countNewsInCategory' => $objNews->getCountNewsInCategories()
         ]);
     }
 
