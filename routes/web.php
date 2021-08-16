@@ -47,3 +47,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
     Route::resource('contact', AdminContactController::class);
     Route::resource('order', AdminOrderController::class);
 });
+
+//чистим кеш
+Route::get('/clear', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+
+    return "Кэш очищен.";
+});
