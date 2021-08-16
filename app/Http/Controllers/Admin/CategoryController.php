@@ -66,14 +66,18 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Показать форму для редактирования указанного ресурса.
      *
      * @param int $id
-     * @return Application|Factory|View
+     * @return View
      */
-    public function edit(int $id)
+    public function edit(int $id): view
     {
-        return view('admin.categories.edit', ['listCategories' => $this->getCategoryList(),'id' => $id]);
+        $objCategory = new Category();
+
+        return view('admin.categories.edit', [
+            'listCategory' => $objCategory->getCategoryById($id)
+        ]);
     }
 
     /**
@@ -94,10 +98,12 @@ class CategoryController extends Controller
      * @param int $id
      * @return View
      */
-    public function destroy(int $id): view
+    public function destroy(Request $request, int $id): view
     {
-//        $objCategory = new Category();
-//        $objCategory->destroyCategoryById($id);
-//        return view("admin.categories.index", ['listCategories' => $objCategory->getCategories()]);
+
+        $objCategory = new Category();
+
+        $objCategory->destroyCategoryById($id);
+        return view("admin.categories.index", ['listCategories' => $objCategory->getCategories()]);
     }
 }

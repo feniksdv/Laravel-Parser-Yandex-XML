@@ -31,13 +31,10 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Название">
+                                    <input class="form-control" placeholder="Название" value="{{ $listCategory->title }}">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="url:">
-                                </div>
-                                <div class="form-group">
-                                    <textarea id="compose-textarea" class="form-control" style="height: 300px"></textarea>
+                                    <textarea id="compose-textarea" class="form-control" style="height: 300px">{{ $listCategory->content }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <div class="btn btn-default btn-file">

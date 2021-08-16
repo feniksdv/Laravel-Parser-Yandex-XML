@@ -52,6 +52,9 @@
                             <th style="width: 10%" class="text-center">
                                 Дата добавления
                             </th>
+                            <th style="width: 10%" class="text-center">
+                                Тихое удаление
+                            </th>
                             <th style="width: 20%">
                             </th>
                         </tr>
@@ -63,6 +66,7 @@
                                 <td>{{ $category->title }}</td>
                                 <td>{{ $category->content }}</td>
                                 <td>{{ now()->format('d-m-Y H:m') }}</td>
+                                <td>{{ $category->status }}</td>
                                 <td class="project-actions text-right">
                                     <a class="btn btn-primary btn-sm" href="{{ route('admin.categories.show', ['category' => $category->id]) }}">
                                         <i class="fas fa-folder">
@@ -74,11 +78,15 @@
                                         </i>
                                         Править
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.categories.destroy', ['category' => $category->id]) }}">
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Удалить
-                                    </a>
+                                    <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button class="btn btn-danger btn-sm" href="">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Удалить
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty

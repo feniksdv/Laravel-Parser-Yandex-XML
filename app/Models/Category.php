@@ -38,8 +38,8 @@ class Category extends Model
     }
 
 
-//    public function destroyCategoryById(int $id)
-//    {
-//        return \DB::table($this->table)->where('id','=', $id)->delete();
-//    }
+    public function destroyCategoryById(int $id): void
+    {
+        \DB::table($this->table)->where('id','=', $id)->update(['status'=> 'delete']);
+    }
 }
