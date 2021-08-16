@@ -17,9 +17,11 @@ class HomeController extends Controller
     {
         $objNews = new News();
         $objCategory = new Category();
+
         return view('home', [
             'listNews' => $objNews->getNews(),
-            'listCategory' => $objCategory->getCategories()
+            'listCategory' => $objCategory->getCategories(),
+            'countNewsInCategory' => $objNews->getCountNewsInCategories()
         ]);
     }
 }

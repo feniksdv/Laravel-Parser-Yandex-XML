@@ -41,7 +41,8 @@ class NewsController extends Controller
         return view('main.news.show', [
             'listNews' => $objNews->getNewsById($id),
             'listCategory' => $objCategory->getCategories(),
-            'id' => $id
+            'id' => $id,
+            'countNewsInCategory' => $objNews->getCountNewsInCategories()
         ]);
     }
 }

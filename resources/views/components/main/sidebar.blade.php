@@ -26,7 +26,7 @@
                             <a href="{{ route('category.show', ['id' => $category->id]) }}">
                                 {{ $category->title }}
                             </a>
-                            <span>{{ count($listCategory) }}</span>
+                            <span>{{ $countNewsInCategory[$category->id] }}</span>
                         </li>
                     @empty
                         <li class="list-group-item d-flex justify-content-between align-items-center">

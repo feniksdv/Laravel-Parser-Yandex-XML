@@ -37,6 +37,7 @@ class Category extends Model
         return \DB::table($this->table)->select($this->allowedFields)->find($id);
     }
 
+
 //    public function destroyCategoryById(int $id)
 //    {
 //        return \DB::table($this->table)->where('id','=', $id)->delete();

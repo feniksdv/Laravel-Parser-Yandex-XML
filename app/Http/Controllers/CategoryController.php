@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -18,10 +19,12 @@ class CategoryController extends Controller
     public function index(Request $request) : view
     {
         $objCategory = new Category();
-
+        $objNews = new News();
+        
         return view('main.category.index', [
             'listCategory' => $objCategory->getCategories(),
-            'id' => 0
+            'id' => 0,
+            'countNewsInCategory' => $objNews->getCountNewsInCategories()
         ]);
     }
 
@@ -39,7 +42,8 @@ class CategoryController extends Controller
         return view('main.category.show', [
             'listNews' => $objNews->getNews(),
             'listCategory' => $objCategory->getCategories(),
-            'id' => $id
+            'id' => $id,
+            'countNewsInCategory' => $objNews->getCountNewsInCategories()
         ]);
     }
 }

@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <x-main.sidebar :listCategory="$listCategory"/>
+                <x-main.sidebar :listCategory="$listCategory" :countNewsInCategory="$countNewsInCategory"/>
             </div>
         </div>
     </section>
