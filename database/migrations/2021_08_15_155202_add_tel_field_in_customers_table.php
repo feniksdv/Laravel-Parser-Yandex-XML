@@ -14,7 +14,7 @@ class AddTelFieldInCustomersTable extends Migration
     public function up()
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->string('tel',19)->unique()->change();
+            $table->unique('tel');
         });
     }
 
