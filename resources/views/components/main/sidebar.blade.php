@@ -22,8 +22,9 @@
             <div class="widget-list">
                 <ul class="list-group list-group-flush">
                     @forelse ($listCategory as $category)
+
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="{{ route('category.show', ['id' => $category->id]) }}">
+                            <a href="{{ route('category.show', ['category' => $category]) }}">
                                 {{ $category->title }}
                             </a>
                             <span>{{ $countNewsInCategory[$category->id] }}</span>
