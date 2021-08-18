@@ -22,18 +22,13 @@ class CategoryController extends Controller
      */
     public function index(Request $request): view
     {
-
-
         $category = Category::with('statuses')
             ->paginate(
                 config('paginate.admin.categories')
             );
 
-//        $categories = $status->id;
-//dd(Category::find(1)->status_[0]->name);
         return view("admin.categories.index", [
             'listCategories' => $category,
-//            'status' => $status
         ]);
     }
 
@@ -64,15 +59,23 @@ class CategoryController extends Controller
      * @param int $id
      * @return View
      */
-    public function show(int $id): view
+    public function show(Category $category): view
     {
-        $objCategory = new Category();
-        $objNews = new News();
+        $categories = Category::all();
+        $news = News::where('category_id', '=', $category->id)->paginate(
+            config('paginate.main.categories')
+        );
+
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $categories->count(); $i++) {
+            $countNewsInCategory[] = News::where('category_id', '=', $i)->count();
+        }
+        unset($countNewsInCategory[0]);
 
         return view('main.category.show', [
-            'listCategory' => $objCategory->getCategories(),
-            'listNews' => $objNews->getNewsByIdCategory($id),
-            'countNewsInCategory' => $objNews->getCountNewsInCategories()
+            'listCategory' => $categories,
+            'listNews' => $news,
+            'countNewsInCategory' => $countNewsInCategory
         ]);
     }
 

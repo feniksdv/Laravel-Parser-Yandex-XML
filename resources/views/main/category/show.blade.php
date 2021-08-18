@@ -8,6 +8,7 @@
                 <div class="row mb-n7 row-cols-1 row-cols-sm-2">
                     <!-- single blog start -->
                     @forelse($listNews as $news)
+
                     <div class="col mb-7">
                         <div class="blog-card">
                             <div class="thumb bg-light p-0 text-center">
