@@ -14,7 +14,11 @@
                         <img src="{{ asset('front/images/blog-details/1.png') }}" alt="img" />
                     </div>
                     <!-- blog-details-thumb -->
-                    <p class="blog-details-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</p>
+                    <p class="blog-details-meta">
+                        {{ $listNews->users->name }}
+                        -
+                        @if($listNews->updated_at) {{ $listNews->updated_at }} @else {{ now()->format('d-m-Y, H:m') }} @endif
+                    </p>
                     <h3 class="blog-details-title">
                         {{ $listNews->title }}
                     </h3>

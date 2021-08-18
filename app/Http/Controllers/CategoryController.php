@@ -34,6 +34,7 @@ class CategoryController extends Controller
             'listCategory' => $listCategory,
             'sidebarCategory' => $sidebarCategory,
             'countNewsInCategory' => $countNewsInCategory,
+            'listNews' => $listNews
         ]);
     }
 

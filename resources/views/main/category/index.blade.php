@@ -17,7 +17,9 @@
                             </div>
                             <div class="blog-content">
                                 <a href="{{ route('category.show', ['category' => $category->id]) }}">
-                                    <span class="blog-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</span>
+                                    <span class="blog-meta">
+                                        @if($category->updated_at) {{ $category->updated_at }} @else {{ now()->format('d-m-Y, H:m') }} @endif
+                                    </span>
                                 </a>
                                 <h3 class="title">
                                     <a href="{{ route('category.show', ['category' => $category->id]) }}">{{ $category->title }}</a>

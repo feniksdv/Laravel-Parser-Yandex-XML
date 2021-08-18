@@ -17,7 +17,11 @@
                             </div>
                             <div class="blog-content">
                                 <a href="{{ route('news.show', ['news' => $news->id]) }}">
-                                    <span class="blog-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</span>
+                                    <span class="blog-meta">
+                                        {{ $news->users->name }}
+                                        -
+                                        @if($news->updated_at) {{ $news->updated_at }} @else {{ now()->format('d-m-Y, H:m') }} @endif
+                                    </span>
                                 </a>
                                 <h3 class="title">
                                     <a href="{{ route('news.show', ['news' => $news->id]) }}">{{ $news->title }}</a>
