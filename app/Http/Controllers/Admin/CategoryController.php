@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\News;
+use App\Models\Status;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -22,8 +22,19 @@ class CategoryController extends Controller
      */
     public function index(Request $request): view
     {
-        $objCategory = new Category();
-        return view("admin.categories.index", ['listCategories' => $objCategory->getCategories()]);
+
+
+        $category = Category::with('statuses')
+            ->paginate(
+                config('paginate.admin.categories')
+            );
+
+//        $categories = $status->id;
+//dd(Category::find(1)->status_[0]->name);
+        return view("admin.categories.index", [
+            'listCategories' => $category,
+//            'status' => $status
+        ]);
     }
 
     /**

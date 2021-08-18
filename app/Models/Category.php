@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
@@ -31,10 +32,19 @@ class Category extends Model
         'seo_title',
         'seo_description',
         'status',
+        'status_id',
+        'name'
     ];
 
     public function news(): HasMany
     {
         return $this->hasMany(News::class, 'category_id', 'id');
     }
+
+    public function statuses(): hasMany
+    {
+        return $this->hasMany(Status::class, 'id', 'status_id');
+    }
+
+
 }

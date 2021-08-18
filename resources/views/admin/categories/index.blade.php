@@ -49,39 +49,46 @@
                             <th style="width: 30%">
                                 Описание
                             </th>
-                            <th style="width: 10%" class="text-center">
+                            <th style="width: 5%">
+                                Статус
+                            </th>
+                            <th style="width: 5%" class="text-center">
                                 Дата добавления
                             </th>
-                            <th style="width: 10%" class="text-center">
+                            <th style="width: 5%" class="text-center">
                                 Тихое удаление
                             </th>
-                            <th style="width: 20%">
+                            <th style="width: 10%">
                             </th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse($listCategories as $category)
+{{--                            @dd($category->status_)--}}
                             <tr>
                                 <td>{{ $category->id }}</td>
                                 <td>{{ $category->title }}</td>
                                 <td>{{ $category->content }}</td>
+{{--                                <td>{{ $category->status_id }}</td>--}}
+                                <td>{{ optional($category->statuses[0])->name }}</td>
                                 <td>{{ now()->format('d-m-Y H:m') }}</td>
                                 <td>{{ $category->status }}</td>
                                 <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.categories.show', ['category' => $category->id]) }}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        Смотреть
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Править
-                                    </a>
                                     <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="post">
                                         @method('DELETE')
                                         @csrf
-                                        <button class="btn btn-danger btn-sm" href="">
+
+                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.categories.show', ['category' => $category->id]) }}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Смотреть
+                                        </a>
+                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Править
+                                        </a>
+                                        <button class="btn btn-danger btn-sm my-2 mx-2" href="">
                                             <i class="fas fa-trash">
                                             </i>
                                             Удалить
@@ -97,6 +104,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="align-self-center my-3">{{ $listCategories->links() }}</div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
