@@ -15,7 +15,7 @@
     <x-main.header></x-main.header>
     <!-- Banner Section Start -->
     @if(request()->routeIs('news.*') || request()->routeIs('category.*'))
-        <x-main.baner :listCategory="$listCategory" :id="$id"></x-main.baner>
+        <x-main.baner :listCategory="$listCategory" :categoryId="$categoryId"></x-main.baner>
     @else
         <x-main.baner></x-main.baner>
     @endif

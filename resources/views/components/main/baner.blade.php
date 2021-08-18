@@ -14,7 +14,7 @@
                             Рубрики
                         @elseif(request()->routeIs('category.*'))
                             @foreach($listCategory as $category)
-                                @if(request()->routeIs('category.show.'.$category->id).'/' and $id === $category->id)
+                                @if($categoryId === $category->id)
                                     {{ $category->title }}
                                 @endif
                             @endforeach
