@@ -15,13 +15,21 @@ class HomeController extends Controller
      */
     public function index(Request $request) : view
     {
-        $objNews = new News();
-        $objCategory = new Category();
+        $listNews = News::paginate(
+            config('paginate.main.news')
+        );
+        $listCategory = Category::all();
+
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $listCategory->count(); $i++) {
+            $countNewsInCategory[] = News::where('category_id', '=', $i)->count();
+        }
+        unset($countNewsInCategory[0]);
 
         return view('home', [
-            'listNews' => $objNews->getNews(),
-            'listCategory' => $objCategory->getCategories(),
-            'countNewsInCategory' => $objNews->getCountNewsInCategories()
+            'listNews' => $listNews,
+            'listCategory' => $listCategory,
+            'countNewsInCategory' => $countNewsInCategory
         ]);
     }
 }

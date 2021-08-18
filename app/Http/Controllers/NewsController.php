@@ -17,32 +17,48 @@ class NewsController extends Controller
      */
     public function index(Request $request) : view
     {
-        $objNews = new News();
-        $objCategory = new Category();
+        $listNews = News::paginate(
+            config('paginate.main.news')
+        );
+        $listCategory = Category::all();
+
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $listCategory->count(); $i++) {
+            $countNewsInCategory[] = News::where('category_id', '=', $i)->count();
+        }
+        unset($countNewsInCategory[0]);
 
         return view('main.news.index', [
-            'listNews' => $objNews->getNews(),
-            'listCategory' => $objCategory->getCategories(),
-            'id' => 0
+            'listNews' => $listNews,
+            'listCategory' => $listCategory,
+            'countNewsInCategory' => $countNewsInCategory
         ]);
     }
 
     /**
      * Выводит конкретную новость
      *
-     * @param int $id
+     * @param Request $request
+     * @param News $news
      * @return View
      */
-    public function show(int $id) :view
+    public function show(Request $request, News $news) :view
     {
-        $objNews = new News();
-        $objCategory = new Category();
+        $listNews = News::all();
+        $listCategory = Category::all();
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $listCategory->count(); $i++) {
+            $countNewsInCategory[] = $listNews->where('category_id', '=', $i)->count();
+        }
+        unset($countNewsInCategory[0]);
+
+        $categoryId = $news['id'];
 
         return view('main.news.show', [
-            'listNews' => $objNews->getNewsById($id),
-            'listCategory' => $objCategory->getCategories(),
-            'id' => $id,
-            'countNewsInCategory' => $objNews->getCountNewsInCategories()
+            'listNews' => $news,
+            'listCategory' => $listCategory,
+            'countNewsInCategory' => $countNewsInCategory,
+            'categoryId' => $categoryId
         ]);
     }
 }

@@ -26,7 +26,7 @@ Route::get('order', OrderController::class)->name('order');
 * * * * * * */
 Route::group(['prefix' => 'category'], function() {
     Route::get('/', [CategoryController::class, 'index'])->name('category');
-    Route::get('/show/{id}', [CategoryController::class, 'show'])->where('id', '\d+')->name('category.show');
+    Route::get('/show/{category}', [CategoryController::class, 'show'])->where('id', '\d+')->name('category.show');
 });
 
 /* * * * * *
@@ -34,7 +34,7 @@ Route::group(['prefix' => 'category'], function() {
 * * * * * */
 Route::group(['prefix' => 'news'], function() {
     Route::get('/', [NewsController::class, 'index'])->name('news');
-    Route::get('/show/{id}', [NewsController::class, 'show'])->where('id', '\d+')->name('news.show');
+    Route::get('/show/{news}', [NewsController::class, 'show'])->where('news', '\d+')->name('news.show');
 });
 
 /* * * * * *

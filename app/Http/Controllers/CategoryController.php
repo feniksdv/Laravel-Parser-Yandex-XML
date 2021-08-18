@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -18,32 +17,53 @@ class CategoryController extends Controller
      */
     public function index(Request $request) : view
     {
-        $objCategory = new Category();
-        $objNews = new News();
-        
+        $sidebarCategory = Category::all();
+        $listNews = News::all();
+        $listCategory = Category::paginate(
+            config('paginate.main.categories')
+        );
+
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $sidebarCategory->count(); $i++) {
+            $countNewsInCategory[] = $listNews->where('category_id', '=', $i)->count();
+        }
+        unset($countNewsInCategory[0]);
+
+
         return view('main.category.index', [
-            'listCategory' => $objCategory->getCategories(),
-            'id' => 0,
-            'countNewsInCategory' => $objNews->getCountNewsInCategories()
+            'listCategory' => $listCategory,
+            'sidebarCategory' => $sidebarCategory,
+            'countNewsInCategory' => $countNewsInCategory,
         ]);
     }
 
     /**
      * Показывает список новостей в конкретной категории
      *
-     * @param int $id
+     * @param Category $category
      * @return View
      */
-    public function show(int $id) : view
+    public function show(Category $category) : view
     {
-        $objNews = new News();
-        $objCategory = new Category();
+        $listNewsByIdCategory = News::where('category_id', '=', $category['id'])
+        ->paginate(
+            config('paginate.main.news')
+        );
+        $listCategory = Category::all();
+
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $listCategory->count(); $i++) {
+            $countNewsInCategory[] = News::where('category_id', '=', $i)->count();
+        }
+        unset($countNewsInCategory[0]);
+
+        $categoryId = $category['id'];
 
         return view('main.category.show', [
-            'listNews' => $objNews->getNews(),
-            'listCategory' => $objCategory->getCategories(),
-            'id' => $id,
-            'countNewsInCategory' => $objNews->getCountNewsInCategories()
+            'listNews' => $listNewsByIdCategory,
+            'listCategory' => $listCategory,
+            'countNewsInCategory' => $countNewsInCategory,
+            'categoryId' => $categoryId
         ]);
     }
 }
