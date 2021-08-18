@@ -46,7 +46,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category) : view
     {
-        $listNewsByIdCategory = News::where('category_id', '=', $category['id'])
+        $listNewsByIdCategory = News::with('users')->where('category_id', '=', $category['id'])
         ->paginate(
             config('paginate.main.news')
         );
