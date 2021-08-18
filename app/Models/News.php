@@ -2,18 +2,15 @@
 
 namespace App\Models;
 
-use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
     use HasFactory;
 
-    protected $table = "news";
-
-    protected array $allowedFields = [
+    public static array $allowedFields = [
         'id',
         'category_id',
         'user_id',
@@ -29,57 +26,28 @@ class News extends Model
         'deleted_at',
         ];
 
-    /**
-     * Получить все новости
-     *
-     * @return Collection
-     */
-    public function getNews(): Collection
+    protected $fillable = [
+        'title',
+        'content',
+        'image',
+        'seo_title',
+        'seo_description',
+        'status',
+        'category_id',
+        'user_id'
+        ];
+
+    public function category(): BelongsTo
     {
-        return DB::table($this->table)->select($this->allowedFields)->get();
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     /**
-     * Получить новость по ID
-     *
-     * @param int $id
-     * @return object
+     * Связь таблицы News and User
+     * @return BelongsTo
      */
-    public function getNewsById(int $id): object
+    public function users(): BelongsTo
     {
-        return DB::table($this->table)->select($this->allowedFields)->find($id);
-    }
-
-    /**
-     * Получить список новостей по ID категории
-     *
-     * @param int $id
-     * @return object
-     */
-    public function getNewsByIdCategory(int $id): object
-    {
-        return DB::table($this->table)
-            ->select($this->allowedFields)
-            ->where('category_id', '=', $id)
-            ->get();
-    }
-
-    /**
-     * Получить количество новостей по ID категории
-     *
-     * @return array
-     */
-    public function getCountNewsInCategories(): array
-    {
-        $objCategory = new Category();
-        $countNewsInCategory = [];
-        for ($i=0; $i <= count($objCategory->getCategories()); $i++) {
-            $countNewsInCategory[] = \DB::table($this->table)
-                ->where('category_id', '=', $i)
-                ->count();
-        }
-        unset($countNewsInCategory[0]);
-
-        return $countNewsInCategory;
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

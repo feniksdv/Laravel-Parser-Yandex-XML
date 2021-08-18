@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
     use HasFactory;
 
-    protected $table = "categories";
-
-    protected array $allowedFields = [
+    public static array $allowedFields = [
         'id',
         'title',
         'content',
@@ -26,20 +24,17 @@ class Category extends Model
         'deleted_at',
     ];
 
-    public function getCategories(): Collection
+    protected $fillable = [
+        'title',
+        'content',
+        'image',
+        'seo_title',
+        'seo_description',
+        'status',
+    ];
+
+    public function news(): HasMany
     {
-        return \DB::table($this->table)->select($this->allowedFields)->get();
-
-    }
-
-    public function getCategoryById(int $id): object
-    {
-        return \DB::table($this->table)->select($this->allowedFields)->find($id);
-    }
-
-
-    public function destroyCategoryById(int $id): void
-    {
-        \DB::table($this->table)->where('id','=', $id)->update(['status'=> 'delete']);
+        return $this->hasMany(News::class, 'category_id', 'id');
     }
 }
