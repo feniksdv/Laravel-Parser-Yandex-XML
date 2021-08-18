@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PageController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -20,6 +21,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('contact', ContactController::class)->name('contact');
 Route::get('order', OrderController::class)->name('order');
 
+/* * * * * * *
+* Страницы  *
+* * * * * * */
+Route::group(['prefix' => 'page'], function(){
+    Route::get('all', [PageController::class, 'index'])->name('page.all');
+    Route::get('{page}', [PageController::class, 'show'])->name('page.show');
+});
 
 /* * * * * * *
 * Категории  *

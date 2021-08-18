@@ -14,24 +14,16 @@
                     <li><a href="{{ route('home') }}">Главная</a></li>
                     <li>
                         <a href="javascript:void(0)">Услуги</a>
-
                         <ul>
                             <li><a href="{{ route('order') }}">Заказать выгрузку</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="javascript:void(0)">Pages</a>
-                        <ul>
-                            <li><a href="faq.html">faq</a></li>
-                            <li><a href="team.html">team</a></li>
-                        </ul>
+                        <a href="{{ route('page.all') }}"><sctrong>Блог</sctrong></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)">Blog</a>
+                        <a href="javascript:void(0)">Материалы</a>
                         <ul>
-                            <li>
-                                <a href="blog.html">Блог</a>
-                            </li>
                             <li>
                                 <a href="{{ route('category') }}">Рубрики</a>
                             </li>
@@ -76,18 +68,10 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="#">Pages</a>
-                            <ul class="sub-menu">
-                                <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="faq.html">faq</a>
-                                </li>
-                                <li class="sub-menu-item">
-                                    <a class="sub-menu-link" href="team.html">team</a>
-                                </li>
-                            </ul>
+                            <a href="{{ route('page.all') }}"><strong>Блог</strong></a>
                         </li>
                         <li>
-                            <a href="#"><strong>Блог</strong></a>
+                            <a href="javascript:void(0)"><strong>Материалы</strong></a>
                             <ul class="sub-menu">
                                 <li class="sub-menu-item">
                                     <a class="sub-menu-link" href="{{ route('category') }}">Рубрики</a>

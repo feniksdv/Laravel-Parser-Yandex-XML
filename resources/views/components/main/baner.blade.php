@@ -22,6 +22,8 @@
                             Контакты
                         @elseif(request()->is('order'))
                             Услуги
+                        @elseif(request()->routeIs('page.*'))
+                            Блог
                         @else
                             Главная
                         @endif
