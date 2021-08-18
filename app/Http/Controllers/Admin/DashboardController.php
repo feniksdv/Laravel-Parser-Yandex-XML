@@ -20,16 +20,16 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request) : view
     {
-        $objNews = new News();
-        $objCategory = new Category();
-        $objOrder = new Order();
-        $objMessage = new Message();
+        $objNews =  News::all();
+        $objCategory = Category::all();
+        $objOrder = Order::all();
+        $objMessage = Message::all();
 
         return view('admin.dashboard.index', [
-            'listNews' => count($objNews->getNews()),
-            'listCategories' => count($objCategory->getCategories()),
-            'listOrder' => count($objOrder->getOrders()),
-            'listMessages' => count($objMessage->getMessages())
+            'listNews' => count($objNews),
+            'listCategories' => count($objCategory),
+            'listOrder' => count($objOrder),
+            'listMessages' => count($objMessage)
         ]);
     }
 }
