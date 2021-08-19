@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -49,26 +50,25 @@ class NewsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Показывает выбранную статью
      *
      * @param int $id
-     * @return Application|Factory|View
+     * @return View
      */
-    public function show(int $id)
+    public function show(News $news): View
     {
-        $newsList = [];
-        foreach($this->getNewsList() as $news) {
-            if($news['id'] === $id) {
-                $newsList = $news;
-            }
+        $categories = Category::all();
+        
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $categories->count(); $i++) {
+            $countNewsInCategory[] = News::where('category_id', '=', $i)->count();
         }
+        unset($countNewsInCategory[0]);
 
-        if(empty($newsList)) {
-            abort(404);
-        }
-
-        return view('news.show', [
-            'newsList' => $newsList
+        return view('main.news.show', [
+            'listNews' => $news,
+            'listCategory' => $categories,
+            'countNewsInCategory' => $countNewsInCategory,
         ]);
     }
 
