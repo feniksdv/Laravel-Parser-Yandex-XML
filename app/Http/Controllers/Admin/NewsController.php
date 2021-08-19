@@ -98,15 +98,37 @@ class NewsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновить новость по нажатию на кнопку Сохранить
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @param News $news
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news): RedirectResponse
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string'],
+            'category_id' => ['required', 'not_in:0'],
+            'status_id' => ['required', 'not_in:0'],
+        ]);
+
+        $news = $news->fill(
+            $request->only([
+                'status_id',
+                'category_id',
+                'user_id',
+                'title',
+                'content',
+                'seo_title',
+                'seo_description'
+            ])
+        )->save();
+
+        if($news) {
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Новость успешно сохранена');
+        }
+        return back()->withInput()->with('error', 'Не удалось сохранить новость');
     }
 
     /**
