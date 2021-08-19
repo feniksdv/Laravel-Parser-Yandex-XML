@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 class Message extends Model
@@ -12,31 +14,28 @@ class Message extends Model
 
     protected $table = "messages";
 
-    protected array $allowedFields = [
-        'messages.id',
-        'messages.user_id',
-        'messages.content',
-        'messages.status_id',
-        'messages.created_at',
-        'messages.updated_at',
-        'messages.status',
-        'messages.deleted_at',
-        'users.name',
-        'users.email',
-        'customers.tel',
-        'customers.telegram',
+    protected $fillable = [
+        'user_id',
+        'content',
+        'status_id',
+        'status',
     ];
 
-    public function getMessages(): Collection
+    /**
+     * Обратная связь один к одному таблиц Messages and Users
+     * @return BelongsTo
+     */
+    public function user(): belongsTo
     {
-        return \DB::table($this->table)->select($this->allowedFields)
-            ->leftJoin('users', $this->table.'.user_id', '=', 'users.id')
-            ->leftJoin('customers', $this->table.'.user_id', '=', 'customers.user_id')
-            ->get();
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function getMessageById(int $id): object
+    /**
+     * Обратная связь один к одному таблиц Messages and Costumers
+     * @return hasMany
+     */
+    public function customers(): hasMany
     {
-        return \DB::table($this->table)->select($this->allowedFields)->find($id);
+        return $this->hasMany(Customer::class, 'user_id', 'user_id');
     }
 }

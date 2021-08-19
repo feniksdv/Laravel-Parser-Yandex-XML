@@ -45,7 +45,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Связь таблицы User adn News
+     * Связь таблицы Users adn News
      * @return HasMany
      */
     public function news(): HasMany
@@ -54,12 +54,21 @@ class User extends Authenticatable
     }
 
     /**
-     * Обратная свзяь один к одному таблиц Costumer and User
+     * Обратная свзяь один к одному таблиц Costumers and Users
      * @return BelongsTo
      */
     public function customer(): belongsTo
     {
         return $this->belongsTo(Customer::class, 'id', 'user_id');
+    }
+
+    /**
+     * Связь таблицы Users adn Messages
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'user_id', 'id');
     }
 
 }

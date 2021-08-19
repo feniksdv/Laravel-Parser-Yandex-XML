@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Список сообщений</h3>
-
+                    @include('layouts.message')
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -66,16 +66,31 @@
                         @forelse($listMessages as $message)
                             <tr>
                                 <td>{{ $message->id }}</td>
-                                <td>{{ $message->name }}</td>
-                                <td>{{ $message->email }}</td>
+                                <td>{{ $message->user->name }}</td>
+                                <td>{{ $message->user->email ." | ". $message->customers[0]->tel}}</td>
                                 <td>{{ mb_substr($message->content, 0, 100).'...' }}</td>
-                                <td>{{ $message->tel }}</td>
-                                <td>{{ $message->telegram }}</td>
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.contact.destroy', ['contact' => $message->id]) }}">
-                                        <i class="fas fa-trash"></i>
-                                        Удалить
-                                    </a>
+                                <td>@if($message->updated_at) {{ $message->updated_at }} @else {{ now() }} @endif</td>
+                                <td>{{ $message->customers[0]->telegram }}</td>
+                                <td>
+                                    <form action="{{ route('admin.contact.destroy', ['contact' => $message->id]) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.contact.show', ['contact' => $message->id]) }}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Смотреть
+                                        </a>
+                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.contact.edit', ['contact' => $message->id]) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Править
+                                        </a>
+                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $message->id }}">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Удалить
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -86,6 +101,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="align-self-center my-3">{{ $listMessages->links() }}</div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

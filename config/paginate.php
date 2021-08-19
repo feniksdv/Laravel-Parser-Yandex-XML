@@ -9,5 +9,6 @@ return [
         'news' => 10,
         'categories' => 5,
         'page' => 5,
+        'message' => 5,
     ]
 ];

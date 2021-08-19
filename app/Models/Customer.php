@@ -20,4 +20,13 @@ class Customer extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    /**
+     * Связь один к одному Costumer and Messages
+     * @return belongsTo
+     */
+    public function message(): belongsTo
+    {
+        return $this->belongsTo(Message::class, 'user_id', 'user_id');
+    }
 }

@@ -16,11 +16,14 @@ class ContactController extends Controller
      * @param Request $request
      * @return view
      */
-    public function index(Request $request): View
+    public function index(Request $request, Message $message): View
     {
-        $objMessage = new Message();
+        $listMessage = Message::with(['user','customers'])->paginate(
+            config('paginate.admin.message')
+        );
+
         return view('admin.contact.index', [
-            'listMessages'=>$objMessage->getMessages()
+            'listMessages' => $listMessage
         ]);
     }
 
