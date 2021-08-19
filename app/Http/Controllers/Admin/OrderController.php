@@ -9,6 +9,7 @@ use App\Models\Order;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -100,21 +101,16 @@ class OrderController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Тихое удаление, не удаляем из БД данные а меня статус на delete
      *
-     * @param $id
-     * @return Application|Factory|View
+     * @param Request $request
+     * @param Order $order
+     * @return RedirectResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Order $order): RedirectResponse
     {
-        $dir = '/var/www/html/storage/app/public/';
-        $_files = scandir($dir);
-        unset($_files[0],$_files[1],$_files[2]);
-        $files = array_values($_files);
+        $order->where('id','=', $order->id)->update(['status'=> 'delete']);
 
-        $path = $dir.$files[$id];
-        unlink($path);
-
-        return view('admin.order.index', ['listOrders'=>$this->getOrder()]);
+        return redirect()->route('admin.order.index')->with('success', 'Заказ удаленно!');
     }
 }
