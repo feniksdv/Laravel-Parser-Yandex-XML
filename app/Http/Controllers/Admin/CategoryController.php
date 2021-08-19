@@ -34,24 +34,47 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Показывает форму по созданию новой категории
      *
      * @return View
      */
     public function create(): View
     {
-        return view('admin.categories.create');
+        $listStatuses = Status::find([1,2,3,4]);
+
+        return view('admin.categories.create', [
+            'listStatuses' => $listStatuses
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string'],
+            'status_id' => ['required', 'not_in:0']
+        ]);
+
+        $category = Category::create(
+            $request->only([
+                'status_id',
+                'title',
+                'content',
+                'seo_title',
+                'seo_description'
+            ])
+        )->save();
+
+        if($category) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Категория успешно создана');
+        }
+        return back()->withInput()->with('error', 'Не удалось создать категорию');
     }
 
     /**

@@ -26,34 +26,57 @@
                     <div class="col-md-12">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h3 class="card-title">Добавить категорию</h3>
+                                <h3 class="card-title">Выбрать категорию</h3>
                             </div>
+                            @if($errors->any())
+                                @foreach($errors->all() as $error)
+                                    <div class="alert alert-danger">{{ $error }}</div>
+                                @endforeach
+                            @endif
+                            @include('layouts.message')
+                            <form action="{{ route('admin.categories.store') }}" method="POST">
+                            @csrf
                             <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Название">
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="url:">
-                                </div>
-                                <div class="form-group">
-                                    <textarea id="compose-textarea" class="form-control" style="height: 300px"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <div class="btn btn-default btn-file">
-                                        <i class="fas fa-paperclip"></i> Картинка
-                                        <input type="file" name="attachment">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <select class="form-control" name="status_id">
+                                            <option value="0" selected>Выбрать статус</option>
+                                            @foreach($listStatuses as $status)
+                                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <p class="help-block">Max. 32MB</p>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" placeholder="Заголовок" name="title" value="{{ old('title') }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="compose-textarea" class="form-control" name="content" style="height: 500px">{!! old('content') !!}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="btn btn-default btn-file">
+                                            <i class="fas fa-paperclip"></i> Картинка
+                                            <input type="file" name="attachment">
+                                        </div>
+                                        <p class="help-block">Max. 32MB</p>
+                                    </div>
+                                    <div class="card-header">
+                                        <h3 class="card-title">SEO параметры</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" placeholder="Title" name="seo_title" value="{{ old('seo_title') }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" placeholder="Description" name="seo_description">{!!old('seo_description') !!}</textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="float-right">
-                                    <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i>Сохранить</button>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <div class="float-right">
+                                        <button type="submit" class="btn btn-default"><i class="fas fa-pencil-alt"></i>Добавить</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- /.card-footer -->
+                                <!-- /.card-footer -->
+                            </form>
                         </div>
                         <!-- /.card -->
                     </div>
