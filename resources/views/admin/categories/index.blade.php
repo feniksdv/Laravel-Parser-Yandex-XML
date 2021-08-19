@@ -64,17 +64,16 @@
                         </thead>
                         <tbody>
                         @forelse($listCategories as $category)
-{{--                            @dd($category->status_)--}}
                             <tr>
                                 <td>{{ $category->id }}</td>
                                 <td>{{ $category->title }}</td>
                                 <td>{{ $category->content }}</td>
-{{--                                <td>{{ $category->status_id }}</td>--}}
                                 <td>{{ optional($category->statuses[0])->name }}</td>
                                 <td>{{ now()->format('d-m-Y H:m') }}</td>
                                 <td>{{ $category->status }}</td>
-                                <td class="project-actions text-right">
+                                <td>
                                     <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="post">
+                                    <form action="" method="post">
                                         @method('DELETE')
                                         @csrf
 
@@ -88,7 +87,7 @@
                                             </i>
                                             Править
                                         </a>
-                                        <button class="btn btn-danger btn-sm my-2 mx-2" href="">
+                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $category->id }}">
                                             <i class="fas fa-trash">
                                             </i>
                                             Удалить
@@ -108,9 +107,9 @@
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
-
         </section>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+{{--    <script type='text/javascript' src="{{ asset('backend/js/remove-silent.js') }}"></script>--}}
 @endsection

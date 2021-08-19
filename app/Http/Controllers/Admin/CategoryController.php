@@ -56,7 +56,7 @@ class CategoryController extends Controller
     /**
      * Показывает выбранную категорию и статьи которые в ней есть
      *
-     * @param int $id
+     * @param Category $category
      * @return View
      */
     public function show(Category $category): view
@@ -107,17 +107,25 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Тихое удаление, не удаляем из БД данные а меня статус на delete
      *
-     * @param int $id
-     * @return View
+     * @param Request $request
+     * @param Category $category
      */
-    public function destroy(Request $request, int $id): view
+    public function destroy(Request $request, Category $category)
     {
+        //1. Тыкнуть на кнопку
+        //2. Отправить через аякс запрос на сервер
+        //3. Вернуть ответ что данные удалились
+        //4. проверка если тыкаем второй раз
 
-        $objCategory = new Category();
+        Category::where('id','=', $category->id)->update(['status'=> 'delete']);
 
-        $objCategory->destroyCategoryById($id);
-        return view("admin.categories.index", ['listCategories' => $objCategory->getCategories()]);
+        $categories = Category::with('statuses')
+            ->paginate(
+                config('paginate.admin.categories')
+            );
+
+        return redirect()->route('admin.categories.index')->with('success', 'Категория удаленна!');
     }
 }
