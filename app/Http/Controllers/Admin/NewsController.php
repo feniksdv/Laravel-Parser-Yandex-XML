@@ -34,24 +34,56 @@ class NewsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Показывает форму по созданию новой новости
      *
      * @return Application|Factory|View
      */
-    public function create()
+    public function create(Request $request, News $news)
     {
-        return view('admin.news.create', ['listCategories' => $this->getCategoryList()]);
+        $listStatuses = Status::find([1,2,3,4]);
+        $listCategory = Category::all();
+        $listAuthors = Customer::where('is_author','=', 1)->get();
+
+        return view('admin.news.create', [
+            'listStatuses' => $listStatuses,
+            'listNews' => $news,
+            'listCategory' => $listCategory,
+            'listAuthors' => $listAuthors,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param \Illuminate\Http\Request $request
+     * @param News $news
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, News $news): RedirectResponse
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string'],
+            'category_id' => ['required', 'not_in:0'],
+            'status_id' => ['required', 'not_in:0'],
+        ]);
+
+        $news = $news->create(
+            $request->only([
+                'status_id',
+                'category_id',
+                'user_id',
+                'title',
+                'content',
+                'seo_title',
+                'seo_description'
+            ])
+        )->save();
+
+        if($news) {
+            return redirect()->route('admin.news.index')
+                ->with('success', 'Новость успешно сохранена');
+        }
+        return back()->withInput()->with('error', 'Не удалось сохранить новость');
     }
 
     /**
