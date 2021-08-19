@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Message;
+use App\Models\Status;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -66,26 +67,44 @@ class ContactController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Показать форму дял редактирования выбранного сообщения
      *
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param Message $contact
+     * @return View
      */
-    public function edit($id)
+    public function edit(Request $request, Message $contact): view
     {
-        //
+        return view('admin.contact.edit', [
+            'listContact' => $contact,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param Message $contact
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Message $contact): RedirectResponse
     {
-        //
+        $request->validate([
+            'content' => ['required', 'string']
+        ]);
+
+        $contact = $contact->fill(
+            $request->only([
+                'status',
+                'content',
+            ])
+        )->save();
+
+        if($contact) {
+            return redirect()->route('admin.contact.index')
+                ->with('success', 'Сообщение успешно сохранено');
+        }
+        return back()->withInput()->with('error', 'Не удалось сохранить сообщение');
     }
 
     /**
