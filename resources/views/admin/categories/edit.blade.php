@@ -41,7 +41,7 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <select class="form-control" name="status_id">
-                                            <option value="0">Выбрать категорию</option>
+                                            <option value="0">Выбрать статус</option>
                                             @foreach($listStatuses as $status)
                                                 @if($listCategory->statuses[0]->id === $status->id)
                                                     <option value="{{ $status->id }}" selected >{{ $status->name }}</option>
