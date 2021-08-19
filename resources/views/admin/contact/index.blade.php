@@ -58,6 +58,9 @@
                             <th style="width: 10%" class="text-center">
                                 Telegram
                             </th>
+                            <th style="width: 10%" class="text-center">
+                                Тихое удаление
+                            </th>
                             <th style="width: 20%">
                             </th>
                         </tr>
@@ -71,6 +74,7 @@
                                 <td>{{ mb_substr($message->content, 0, 100).'...' }}</td>
                                 <td>@if($message->updated_at) {{ $message->updated_at }} @else {{ now() }} @endif</td>
                                 <td>{{ $message->customers[0]->telegram }}</td>
+                                <td>{{ $message->status }}</td>
                                 <td>
                                     <form action="{{ route('admin.contact.destroy', ['contact' => $message->id]) }}" method="post">
                                         @method('DELETE')

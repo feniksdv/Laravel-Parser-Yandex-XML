@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Message;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -87,13 +89,15 @@ class ContactController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Тихое удаление, не удаляем из БД данные а меня статус на delete
      *
-     * @param  int  $id
-     * @return Response
+     * @param Message $contact
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Message $contact): RedirectResponse
     {
-        //
+        $contact->where('id','=', $contact->id)->update(['status'=> 'delete']);
+
+        return redirect()->route('admin.contact.index')->with('success', 'Сообщение удаленно!');
     }
 }
