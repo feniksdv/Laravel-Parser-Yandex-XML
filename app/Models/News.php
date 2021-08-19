@@ -35,7 +35,8 @@ class News extends Model
         'seo_description',
         'status',
         'category_id',
-        'user_id'
+        'user_id',
+        'name'
         ];
 
     /**

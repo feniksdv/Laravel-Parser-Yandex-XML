@@ -109,7 +109,7 @@ class CategoryController extends Controller
     /**
      * Показать форму для редактирования указанного ресурса.
      *
-     * @param int $id
+     * @param Category $category
      * @return View
      */
     public function edit(Category $category): view

@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\News;
+use App\Models\Status;
+use App\Models\User;
+use Cassandra\Custom;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -74,14 +78,23 @@ class NewsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Показать форму для редактирования выбранной новости.
      *
-     * @param int $id
-     * @return Application|Factory|View
+     * @param News $news
+     * @return View
      */
-    public function edit(int $id)
+    public function edit(News $news): View
     {
-        return view('admin.news.edit', ['listCategories' => $this->getCategoryList(),'id' => $id]);
+        $listCategory = Category::all();
+        $listStatuses = Status::find([1,2,3,4]);
+        $listAuthors = Customer::where('is_author','=', 1)->get();
+
+        return view('admin.news.edit', [
+            'listNews' => $news,
+            'listCategory' => $listCategory,
+            'listStatuses' => $listStatuses,
+            'listAuthors' => $listAuthors,
+        ]);
     }
 
     /**
