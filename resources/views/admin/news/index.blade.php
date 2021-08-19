@@ -46,16 +46,25 @@
                             <th style="width: 20%">
                                 Название
                             </th>
+                            <th style="width: 5%">
+                                Автор
+                            </th>
+                            <th style="width: 5%">
+                                Категория
+                            </th>
                             <th style="width: 30%">
                                 Текс новости
                             </th>
                             <th style="width: 8%" class="text-center">
                                 Статус
                             </th>
-                            <th style="width: 10%" class="text-center">
+                            <th style="width: 5%" class="text-center">
                                 Дата публикации
                             </th>
-                            <th style="width: 20%">
+                            <th style="width: 5%" class="text-center">
+                                Тихое удаление
+                            </th>
+                            <th style="width: 10%">
                             </th>
                         </tr>
                         </thead>
@@ -64,27 +73,42 @@
                             <tr>
                                 <td>{{ $news->id }}</td>
                                 <td>{{ $news->title }}</td>
+                                <td>{{ $news->users->name }}</td>
+                                <td>{{ $news->category->title }}</td>
                                 <td>{{ mb_substr($news->content, 0, 156).'...' }}</td>
                                 <td class="project-state">
-                                    <span class="badge badge-success">Опубликована</span>
+                                    @if(optional($news->statuses[0])->id === 1)
+                                        <span class="badge badge-dark">{{ optional($news->statuses[0])->name }}</span>
+                                    @elseif(optional($news->statuses[0])->id === 2)
+                                        <span class="badge badge-warning">{{ optional($news->statuses[0])->name }}</span>
+                                    @elseif(optional($news->statuses[0])->id === 3)
+                                        <span class="badge badge-success">{{ optional($news->statuses[0])->name }}</span>
+                                    @elseif(optional($news->statuses[0])->id === 4)
+                                        <span class="badge badge-danger">{{ optional($news->statuses[0])->name }}</span>
+                                    @endif
                                 </td>
-                                <td>{{ now()->format('d-m-Y H:m') }}</td>
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.news.show', ['news' => $news->id]) }}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        Смотреть
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="{{ route('admin.news.edit', ['news' => $news->id]) }}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Править
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.news.destroy', ['news' => $news->id]) }}">
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Удалить
-                                    </a>
+                                <td>@if($news->updated_at) {{ $news->updated_at }} @else {{ now() }} @endif</td>
+                                <td>{{ $news->status }}</td>
+                                <td>
+                                    <form action="{{ route('admin.news.destroy', ['news' => $news->id]) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.news.show', ['news' => $news->id]) }}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Смотреть
+                                        </a>
+                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.news.edit', ['news' => $news->id]) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Править
+                                        </a>
+                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $news->id }}">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Удалить
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -95,6 +119,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="align-self-center my-3">{{ $listNews->links() }}</div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

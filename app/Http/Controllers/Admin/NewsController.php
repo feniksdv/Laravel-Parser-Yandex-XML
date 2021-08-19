@@ -19,9 +19,11 @@ class NewsController extends Controller
      */
     public function index(): view
     {
-        $objNews = new News();
+        $objNews = News::with(['statuses', 'users', 'category'])->paginate(
+            config('paginate.admin.news')
+        );
         return view('admin.news.index', [
-            'listNews'=>$objNews->getNews()
+            'listNews'=>$objNews
         ]);
     }
 
