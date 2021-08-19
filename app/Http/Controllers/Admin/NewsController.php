@@ -8,6 +8,7 @@ use App\Models\News;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -52,13 +53,13 @@ class NewsController extends Controller
     /**
      * Показывает выбранную статью
      *
-     * @param int $id
+     * @param News $news
      * @return View
      */
     public function show(News $news): View
     {
         $categories = Category::all();
-        
+
         $countNewsInCategory = [];
         for ($i=0; $i <= $categories->count(); $i++) {
             $countNewsInCategory[] = News::where('category_id', '=', $i)->count();
@@ -96,13 +97,21 @@ class NewsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Тихое удаление, не удаляем из БД данные а меня статус на delete
      *
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param News $news
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, News $news): RedirectResponse
     {
-        //
+        News::where('id','=', $news->id)->update(['status'=> 'delete']);
+
+        $news_ = Category::with('statuses')
+            ->paginate(
+                config('paginate.admin.news')
+            );
+
+        return redirect()->route('admin.news.index')->with('success', 'Новость удаленна!');
     }
 }
