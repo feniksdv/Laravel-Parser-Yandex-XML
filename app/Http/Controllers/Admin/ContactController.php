@@ -28,11 +28,12 @@ class ContactController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Показывает форму по созданию новой категории
      *
-     * @return Response
+     * @param Message $message
+     * @return View
      */
-    public function create()
+    public function create(Message $message): view
     {
         //
     }
@@ -50,14 +51,16 @@ class ContactController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Показать выбранное сообщение
      *
-     * @param  int  $id
-     * @return Response
+     * @param Message $message
+     * @return View
      */
-    public function show($id)
+    public function show(Request $request, Message $contact): view
     {
-        //
+        return view('admin.contact.show', [
+            'listMessage' => $contact
+        ]);
     }
 
     /**
