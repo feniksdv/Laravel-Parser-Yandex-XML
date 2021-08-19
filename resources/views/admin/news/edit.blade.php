@@ -52,7 +52,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" name="status_id">
+                                        <select class="form-control" name="category_id">
                                             <option value="0">Выбрать категорию</option>
                                             @foreach($listCategory as $category)
                                                 @if($listNews->category_id === $category->id)
@@ -64,7 +64,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" name="status_id">
+                                        <select class="form-control" name="user_id">
                                             <option value="0">Выбрать автора</option>
                                             @foreach($listAuthors as $authors)
                                                 @if($listNews->user_id === $authors->user_id)

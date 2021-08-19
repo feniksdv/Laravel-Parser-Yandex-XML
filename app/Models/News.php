@@ -36,7 +36,8 @@ class News extends Model
         'status',
         'category_id',
         'user_id',
-        'name'
+        'name',
+        'status_id'
         ];
 
     /**
