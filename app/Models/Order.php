@@ -4,40 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 class Order extends Model
 {
     use HasFactory;
 
-    protected $table = "orders";
-
-    protected array $allowedFields = [
-        'orders.id',
-        'orders.user_id',
-        'orders.content',
-        'orders.status_id',
-        'orders.created_at',
-        'orders.updated_at',
-        'orders.status',
-        'orders.deleted_at',
-        'users.name',
-        'users.email',
-        'customers.tel',
-        'customers.telegram',
+    protected $fillable = [
+        'user_id',
+        'content',
+        'status_id',
+        'status',
     ];
 
-    public function getOrders(): Collection
+    /**
+     * Обратная связь один к одному таблиц Messages and Users
+     * @return hasMany
+     */
+    public function users(): hasMany
     {
-        return \DB::table($this->table)->select($this->allowedFields)
-            ->leftJoin('users', $this->table.'.user_id', '=', 'users.id')
-            ->leftJoin('customers', $this->table.'.user_id', '=', 'customers.user_id')
-            ->get();
-
+        return $this->hasMany(User::class, 'id', 'user_id');
     }
 
-    public function getOrderById(int $id): object
+    /**
+     * Обратная связь один к одному таблиц Messages and Costumers
+     * @return hasMany
+     */
+    public function customers(): hasMany
     {
-        return \DB::table($this->table)->select($this->allowedFields)->find($id);
+        return $this->hasMany(Customer::class, 'user_id', 'user_id');
     }
 }

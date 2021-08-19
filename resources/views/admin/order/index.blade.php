@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Список заказов</h3>
-
+                    @include('layouts.message')
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -55,6 +55,9 @@
                             <th style="width: 10%" class="text-center">
                                 Дата добавления
                             </th>
+                            <th style="width: 10%" class="text-center">
+                                Статус
+                            </th>
                             <th style="width: 20%">
                             </th>
                         </tr>
@@ -63,21 +66,31 @@
                         @forelse($listOrders as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
-                                <td>{{ $order->name }}</td>
-                                <td>{{ $order->tel." | ".$order->email }}</td>
+                                <td>{{ $order->users[0]->name }}</td>
+                                <td>{{ $order->users[0]->email ." | ". $order->customers[0]->tel}}</td>
                                 <td>{{ mb_substr($order->content, 0, 100).'...' }}</td>
-                                <td>{{ now()->format('d-m-Y') }}</td>
-                                <td class="project-actions text-right">
+                                <td>@if($order->updated_at) {{ $order->updated_at }} @else {{ now() }} @endif</td>
+                                <td>{{ $order->status }}</td>
+                                <td>
                                     <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="post">
-                                        @method('delete')
+                                        @method('DELETE')
                                         @csrf
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-trash"></i>
+                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.order.show', ['order' => $order->id]) }}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Смотреть
+                                        </a>
+                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.order.edit', ['order' => $order->id]) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Править
+                                        </a>
+                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $order->id }}">
+                                            <i class="fas fa-trash">
+                                            </i>
                                             Удалить
                                         </button>
-
                                     </form>
-
                                 </td>
                             </tr>
                         @empty
@@ -88,6 +101,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="align-self-center my-3">{{ $listOrders->links() }}</div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->

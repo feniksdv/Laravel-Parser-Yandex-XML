@@ -1,4 +1,5 @@
 <?php
+
 return [
     'main' =>  [
         'news' => 10,
@@ -10,5 +11,6 @@ return [
         'categories' => 5,
         'page' => 5,
         'message' => 5,
+        'order' => 5,
     ]
 ];
