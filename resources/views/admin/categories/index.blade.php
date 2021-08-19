@@ -73,7 +73,6 @@
                                 <td>{{ $category->status }}</td>
                                 <td>
                                     <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="post">
-                                    <form action="" method="post">
                                         @method('DELETE')
                                         @csrf
 
