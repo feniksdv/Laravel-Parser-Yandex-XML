@@ -12,7 +12,7 @@
                             Статья
                         @elseif(request()->is('category'))
                             Рубрики
-                        @elseif(request()->routeIs('category.*'))
+                        @elseif(request()->routeIs('category.*') || request()->routeIs('admin.categories.*'))
                             @foreach($listCategory as $category)
                                 @if($categoryId === $category->id)
                                     {{ $category->title }}

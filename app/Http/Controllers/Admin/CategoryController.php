@@ -72,10 +72,13 @@ class CategoryController extends Controller
         }
         unset($countNewsInCategory[0]);
 
+        $categoryId = $category['id'];
+        
         return view('main.category.show', [
             'listCategory' => $categories,
             'listNews' => $news,
-            'countNewsInCategory' => $countNewsInCategory
+            'countNewsInCategory' => $countNewsInCategory,
+            'categoryId' => $categoryId
         ]);
     }
 

@@ -14,7 +14,7 @@
     <!-- Modal -->
     <x-main.header></x-main.header>
     <!-- Banner Section Start -->
-    @if(request()->routeIs('news.*') || request()->routeIs('category.*'))
+    @if(request()->routeIs('news.*') || request()->routeIs('category.*') || request()->routeIs('admin.categories.*'))
         <x-main.baner :listCategory="$listCategory" :categoryId="$categoryId"></x-main.baner>
     @else
         <x-main.baner></x-main.baner>
