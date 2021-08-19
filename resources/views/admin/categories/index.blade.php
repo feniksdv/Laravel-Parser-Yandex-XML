@@ -69,7 +69,7 @@
                                 <td>{{ $category->title }}</td>
                                 <td>{{ $category->content }}</td>
                                 <td>{{ optional($category->statuses[0])->name }}</td>
-                                <td>{{ now()->format('d-m-Y H:m') }}</td>
+                                <td>@if($category->updated_at) {{ $category->updated_at }} @else {{ now() }} @endif</td>
                                 <td>{{ $category->status }}</td>
                                 <td>
                                     <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="post">
