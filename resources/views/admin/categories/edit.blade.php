@@ -28,29 +28,60 @@
                             <div class="card-header">
                                 <h3 class="card-title">Редактировать категорию</h3>
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Название" value="{{ $listCategory->title }}">
-                                </div>
-                                <div class="form-group">
-                                    <textarea id="compose-textarea" class="form-control" style="height: 300px">{{ $listCategory->content }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <div class="btn btn-default btn-file">
-                                        <i class="fas fa-paperclip"></i> Картинка
-                                        <input type="file" name="attachment">
+                            @if($errors->any())
+                                @foreach($errors->all() as $error)
+                                    <div class="alert alert-danger">{{ $error }}</div>
+                                @endforeach
+                            @endif
+                            @include('layouts.message')
+                            <form action="{{ route('admin.categories.update', ['category' => $listCategory->id]) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <select class="form-control" name="status_id">
+                                            <option value="0">Выбрать категорию</option>
+                                            @foreach($listStatuses as $status)
+                                                @if($listCategory->statuses[0]->id === $status->id)
+                                                    <option value="{{ $status->id }}" selected >{{ $status->name }}</option>
+                                                @else
+                                                    <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <p class="help-block">Max. 32MB</p>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" placeholder="Заголовок" name="title" value="{{ ($errors->any()) ? old('title') : $listCategory->title }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="compose-textarea" class="form-control" name="content" style="height: 500px">{!! ($errors->any()) ? old('content') : $listCategory->content !!}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="btn btn-default btn-file">
+                                            <i class="fas fa-paperclip"></i> Картинка
+                                            <input type="file" name="attachment">
+                                        </div>
+                                        <p class="help-block">Max. 32MB</p>
+                                    </div>
+                                    <div class="card-header">
+                                        <h3 class="card-title">SEO параметры</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" placeholder="Title" name="seo_title" value="{{ ($errors->any()) ? old('seo_title') : $listCategory->seo_title }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" placeholder="Description" name="seo_description">{!! ($errors->any()) ? old('seo_description') : $listCategory->seo_description !!}</textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="float-right">
-                                    <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i>Сохранить</button>
-                                </div>
-                            </div>
-                            <!-- /.card-footer -->
+                                <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <div class="float-right">
+                                            <button type="submit" class="btn btn-default"><i class="fas fa-pencil-alt"></i>Сохранить</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-footer -->
+                            </form>
                         </div>
                         <!-- /.card -->
                     </div>

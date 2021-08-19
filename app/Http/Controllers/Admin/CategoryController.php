@@ -9,6 +9,7 @@ use App\Models\Status;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -35,9 +36,9 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Application|Factory|View
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('admin.categories.create');
     }
@@ -45,7 +46,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return Response
      */
     public function store(Request $request)
@@ -73,7 +74,7 @@ class CategoryController extends Controller
         unset($countNewsInCategory[0]);
 
         $categoryId = $category['id'];
-        
+
         return view('main.category.show', [
             'listCategory' => $categories,
             'listNews' => $news,
@@ -88,25 +89,47 @@ class CategoryController extends Controller
      * @param int $id
      * @return View
      */
-    public function edit(int $id): view
+    public function edit(Category $category): view
     {
-        $objCategory = new Category();
+        $listCategory = Category::find($category->id);
+        $listStatuses = Status::find([1,2,3,4]);
 
         return view('admin.categories.edit', [
-            'listCategory' => $objCategory->getCategoryById($id)
+            'listCategory' => $listCategory,
+            'listStatuses' => $listStatuses,
         ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновить категорию по нажатию на кнопку Сохранить
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param Category $category
+     * @return RedirectResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, Category $category): RedirectResponse
     {
-        //
+
+        $request->validate([
+            'title' => ['required', 'string'],
+            'status_id' => ['required', 'not_in:0']
+        ]);
+
+        $category = $category->fill(
+            $request->only([
+                'status_id',
+                'title',
+                'content',
+                'seo_title',
+                'seo_description'
+            ])
+        )->save();
+
+        if($category) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Категория успешно сохранена');
+        }
+        return back()->withInput()->with('error', 'Не удалось сохранить категорию');
     }
 
     /**
@@ -114,14 +137,10 @@ class CategoryController extends Controller
      *
      * @param Request $request
      * @param Category $category
+     * @return RedirectResponse
      */
-    public function destroy(Request $request, Category $category)
+    public function destroy(Request $request, Category $category): RedirectResponse
     {
-        //1. Тыкнуть на кнопку
-        //2. Отправить через аякс запрос на сервер
-        //3. Вернуть ответ что данные удалились
-        //4. проверка если тыкаем второй раз
-
         Category::where('id','=', $category->id)->update(['status'=> 'delete']);
 
         $categories = Category::with('statuses')
