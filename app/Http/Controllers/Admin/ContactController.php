@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Message;
-use App\Models\Status;
+use App\Models\User;
+use Exception;
+use Faker\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -47,11 +48,48 @@ class ContactController extends Controller
      *
      * @param Request $request
      * @return Response
+     * @throws Exception
      */
     public function store(Request $request): Response
     {
-        //Сохраняем в БД отправленные данные через форму контактов
-        return response($request->input('name').", сообщение отправлено!");
+        try {
+            $request->validate([
+                'name'      => ['required', 'string'],
+                'email'     => ['required', 'email'],
+                'massage'   => ['required', 'string']
+            ]);
+
+            //Найдем такого пользователя в БД
+            $findUser = User::firstWhere('email', $request->input('email'));
+
+            //если пользователь нашелся то добавляем запись в БД
+            if($findUser){
+                Message::create([
+                    'user_id' => $findUser->id,
+                    'content' => $request->input('massage'),
+                    'status_id' => 5,
+                ]);
+                return response("Сообщение отправлено!", 200);
+            }
+
+            //Если пользователя нет, то создадим его и добавим его сообщение
+            $faker = Factory::create('ru_RU');
+            $userAdd = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => $faker->password(6,20)
+            ]);
+
+            Message::create([
+                'user_id' => $userAdd->id,
+                'content' => $request->input('massage'),
+                'status_id' => 5,
+            ]);
+            return response("Сообщение отправлено!", 200);
+        }
+        catch (Exception $e) {
+            response ("Сообщение не отправлено!");
+        }
     }
 
     /**

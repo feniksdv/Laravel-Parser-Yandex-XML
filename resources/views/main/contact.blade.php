@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="col-12 mb-9">
-                            <textarea class="form-control massage-control" name="massage" id="massage" cols="30" rows="10" placeholder="Ваше сообщение" value="{{ old('massage') }}"></textarea>
+                            <textarea class="form-control massage-control" name="massage" id="massage" cols="30" rows="10" placeholder="Ваше сообщение">{{ old('massage') }}</textarea>
                         </div>
                         <div class="col-12">
                             <button id="contactSubmit" type="submit" class="btn btn-dark btn-hover-dark" data-complete-text="Well Done!">
