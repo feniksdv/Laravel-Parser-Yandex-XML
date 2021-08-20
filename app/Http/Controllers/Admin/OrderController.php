@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Message;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -53,16 +54,45 @@ class OrderController extends Controller
      */
     public function store(Request $request): Response
     {
-        //Сохраняем данные в файл, если тел. такой же то дописываем в конец файла
-        Storage::append(
-            "/public/{$request->input('tel')}.log",
-            $request->input('name')."\n".
-            $request->input('tel')."\n".
-            $request->input('email')."\n".
-            $request->input('massage')."\n
-            *********************************************************************"
-        );
-        return response($request->input('name').", Заказ обрабатывается, ожидайте!");
+        try {
+            $request->validate([
+                'name'      => ['required', 'string'],
+                'email'     => ['required', 'email'],
+                'tel'     => ['required', 'integer'],
+                'massage'   => ['required', 'string']
+            ]);
+
+            //Найдем такого пользователя в БД
+            $findUser = User::firstWhere('email', $request->input('email'));
+
+            //если пользователь нашелся то добавляем запись в БД
+            if($findUser){
+                Order::create([
+                    'user_id' => $findUser->id,
+                    'content' => $request->input('massage'),
+                    'status_id' => 5,
+                ]);
+                return response("Сообщение отправлено!", 200);
+            }
+
+            //Если пользователя нет, то создадим его и добавим его сообщение
+            $faker = \Faker\Factory::create('ru_RU');
+            $userAdd = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => $faker->password(6,20)
+            ]);
+
+            Order::create([
+                'user_id' => $userAdd->id,
+                'content' => $request->input('massage'),
+                'status_id' => 5,
+            ]);
+            return response("Сообщение отправлено!", 200);
+        }
+        catch (Exception $e) {
+            response ("Сообщение не отправлено!");
+        }
     }
 
     /**
