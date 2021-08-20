@@ -36,17 +36,17 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Форма для создания нового заказ
      *
      * @return Response
      */
     public function create()
     {
-        //
+        //в админке это не нужно, для этого есть форма http://localhost/order
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохраняет в БД отправленные данные через форму http://localhost/order
      *
      * @param Request $request
      * @return Response
@@ -79,26 +79,43 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Отображает форму для редактирования выбранного заказа
      *
-     * @param  int  $id
-     * @return Response
+     * @param Order $order
+     * @return View
      */
-    public function edit($id)
+    public function edit(Order $order): View
     {
-        //
+        return view('admin.order.edit', [
+            'listOrder' => $order,
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновляет данные в БД по окончанию редактирования заказа
      *
      * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param Order $order
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order): RedirectResponse
     {
-        //
+        $request->validate([
+            'content' => ['required', 'string']
+        ]);
+
+        $order = $order->fill(
+            $request->only([
+                'status',
+                'content',
+            ])
+        )->save();
+
+        if($order) {
+            return redirect()->route('admin.order.index')
+                ->with('success', 'Заказ успешно сохранен');
+        }
+        return back()->withInput()->with('error', 'Не удалось сохранить заказ');
     }
 
     /**

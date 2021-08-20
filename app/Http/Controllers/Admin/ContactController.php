@@ -17,6 +17,7 @@ class ContactController extends Controller
      * Выводит список всех сообщений
      *
      * @param Request $request
+     * @param Message $message
      * @return view
      */
     public function index(Request $request, Message $message): View
@@ -31,18 +32,18 @@ class ContactController extends Controller
     }
 
     /**
-     * Показывает форму по созданию новой категории
+     * Показывает форму по созданию нового сообщения
      *
      * @param Message $message
      * @return View
      */
     public function create(Message $message): view
     {
-        //
+        //Зачем админу это, это делается через форму http://localhost/contact
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохраняем в БД отправленные данные через форму контактов http://localhost/contact
      *
      * @param Request $request
      * @return Response
@@ -56,7 +57,8 @@ class ContactController extends Controller
     /**
      * Показать выбранное сообщение
      *
-     * @param Message $message
+     * @param Request $request
+     * @param Message $contact
      * @return View
      */
     public function show(Request $request, Message $contact): view
@@ -81,7 +83,7 @@ class ContactController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновляет данные в БД через редактирование в админке
      *
      * @param Request $request
      * @param Message $contact

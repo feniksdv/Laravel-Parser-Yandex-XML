@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    {{$listOrder->content}}
+                    {!! $listOrder->content !!}
                     <div>
                         <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.order.index') }}">
                             <i class="fas fa-backspace"></i>

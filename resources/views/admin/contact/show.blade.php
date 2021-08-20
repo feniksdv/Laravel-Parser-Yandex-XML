@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    {{$listMessage->content}}
+                    {!! $listMessage->content !!}
                     <div>
                         <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.contact.index') }}">
                             <i class="fas fa-backspace"></i>
