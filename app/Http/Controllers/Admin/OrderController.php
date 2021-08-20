@@ -26,8 +26,7 @@ class OrderController extends Controller
      */
     public function index(Request $request, Order $order ): View
     {
-//        $listOrders = Order::with(['user','customers'])->paginate(
-        $listOrders = Order::paginate(
+        $listOrders = Order::with(['users','customers'])->paginate(
             config('paginate.admin.order')
         );
 
@@ -67,14 +66,16 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Отображает выбранный заказ
      *
-     * @param  int  $id
-     * @return Response
+     * @param Order $order
+     * @return View
      */
-    public function show($id)
+    public function show(Order $order): View
     {
-        //
+        return view('admin.order.show', [
+            'listOrder' => $order
+        ]);
     }
 
     /**

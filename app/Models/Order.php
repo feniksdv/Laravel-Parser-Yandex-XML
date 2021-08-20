@@ -20,7 +20,7 @@ class Order extends Model
     ];
 
     /**
-     * Обратная связь один к одному таблиц Messages and Users
+     * Обратная связь один к одному таблиц Order and Users
      * @return hasMany
      */
     public function users(): hasMany
@@ -29,7 +29,7 @@ class Order extends Model
     }
 
     /**
-     * Обратная связь один к одному таблиц Messages and Costumers
+     * Обратная связь один к одному таблиц Order and Costumers
      * @return hasMany
      */
     public function customers(): hasMany
