@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
-use App\Models\Message;
+use App\Http\Requests\Admin\UpdateOrderRequest;
 use App\Models\Order;
-use App\Models\User;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 
 
 class OrderController extends Controller
@@ -37,62 +31,17 @@ class OrderController extends Controller
     }
 
     /**
-     * Форма для создания нового заказ
-     *
-     * @return Response
+     * Форма для создания нового заказ в админке этого не делается,
+     * заказа создается пользователем на фронте http://localhost/order
      */
     public function create()
     {
-        //в админке это не нужно, для этого есть форма http://localhost/order
+        //
     }
 
-    /**
-     * Сохраняет в БД отправленные данные через форму http://localhost/order
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request): Response
+    public function store()
     {
-        try {
-            $request->validate([
-                'name'      => ['required', 'string'],
-                'email'     => ['required', 'email'],
-                'tel'     => ['required', 'integer'],
-                'massage'   => ['required', 'string']
-            ]);
-
-            //Найдем такого пользователя в БД
-            $findUser = User::firstWhere('email', $request->input('email'));
-
-            //если пользователь нашелся то добавляем запись в БД
-            if($findUser){
-                Order::create([
-                    'user_id' => $findUser->id,
-                    'content' => $request->input('massage'),
-                    'status_id' => 5,
-                ]);
-                return response("Сообщение отправлено!", 200);
-            }
-
-            //Если пользователя нет, то создадим его и добавим его сообщение
-            $faker = \Faker\Factory::create('ru_RU');
-            $userAdd = User::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => $faker->password(6,20)
-            ]);
-
-            Order::create([
-                'user_id' => $userAdd->id,
-                'content' => $request->input('massage'),
-                'status_id' => 5,
-            ]);
-            return response("Сообщение отправлено!", 200);
-        }
-        catch (Exception $e) {
-            response ("Сообщение не отправлено!");
-        }
+       //
     }
 
     /**
@@ -124,28 +73,19 @@ class OrderController extends Controller
     /**
      * Обновляет данные в БД по окончанию редактирования заказа
      *
-     * @param Request $request
+     * @param UpdateOrderRequest $request
      * @param Order $order
      * @return RedirectResponse
      */
-    public function update(Request $request, Order $order): RedirectResponse
+    public function update(UpdateOrderRequest $request, Order $order): RedirectResponse
     {
-        $request->validate([
-            'content' => ['required', 'string']
-        ]);
+        $order_ = $order->fill($request->validated())->save();
 
-        $order = $order->fill(
-            $request->only([
-                'status',
-                'content',
-            ])
-        )->save();
-
-        if($order) {
+        if($order_) {
             return redirect()->route('admin.order.index')
-                ->with('success', 'Заказ успешно сохранен');
+                ->with('success', __('messages.admin.order.update.success'));
         }
-        return back()->withInput()->with('error', 'Не удалось сохранить заказ');
+        return back()->withInput()->with('error', __('messages.admin.order.update.error'));
     }
 
     /**
@@ -159,6 +99,6 @@ class OrderController extends Controller
     {
         $order->where('id','=', $order->id)->update(['status'=> 'delete']);
 
-        return redirect()->route('admin.order.index')->with('success', 'Заказ удаленно!');
+        return redirect()->route('admin.order.index')->with('success', __('messages.admin.order.destroy.success'));
     }
 }

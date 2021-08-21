@@ -28,11 +28,6 @@
                             <div class="card-header">
                                 <h3 class="card-title">Редактировать заказ</h3>
                             </div>
-                            @if($errors->any())
-                                @foreach($errors->all() as $error)
-                                    <div class="alert alert-danger">{{ $error }}</div>
-                                @endforeach
-                            @endif
                             @include('layouts.message')
                             <form action="{{ route('admin.order.update', ['order' => $listOrder->id]) }}" method="POST">
                             @csrf
@@ -46,7 +41,10 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <textarea id="compose-textarea" class="form-control" name="content" style="height: 500px">{!! ($errors->any()) ? old('order') : $listOrder->content !!}</textarea>
+                                        <textarea id="compose-textarea" class="form-control" id="content" name="content" style="height: 500px">{!! ($errors->any()) ? old('order') : $listOrder->content !!}</textarea>
+                                        @error('content')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
