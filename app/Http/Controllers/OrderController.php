@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Contracts\View\View;
@@ -25,18 +27,11 @@ class OrderController extends Controller
     /**
      * Получает данные от main.order.blade (форма Заказа) и сохраняет их в БД
      *
-     * @param Request $request
+     * @param StoreOrderRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreOrderRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name'      => ['required', 'string'],
-            'email'     => ['required', 'email'],
-            'tel'       => ['required', 'integer'],
-            'massage'   => ['required', 'string']
-        ]);
-
         //Найдем такого пользователя в БД
         $findUser = User::firstWhere('email', $request->input('email'));
 
@@ -47,7 +42,7 @@ class OrderController extends Controller
                 'content' => $request->input('massage'),
                 'status_id' => 5,
             ]);
-            return redirect()->route('order')->with("success","Сообщение отправлено!");
+            return redirect()->route('order')->with("success",__('messages.front.order.store.success'));
         }
 
         //Если пользователя нет, то создадим его и добавим его сообщение
@@ -63,6 +58,6 @@ class OrderController extends Controller
             'content' => $request->input('massage'),
             'status_id' => 5,
         ]);
-        return redirect()->route('order')->with("success","Сообщение отправлено!");
+        return redirect()->route('order')->with("success",__('messages.front.order.store.success'));
     }
 }
