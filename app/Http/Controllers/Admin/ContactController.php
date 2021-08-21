@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreContactRequest;
+use App\Http\Requests\Admin\UpdateContactRequest;
 use App\Models\Message;
-use App\Models\User;
-use Exception;
-use Faker\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ContactController extends Controller
 {
@@ -34,62 +32,16 @@ class ContactController extends Controller
 
     /**
      * Показывает форму по созданию нового сообщения
-     *
-     * @param Message $message
-     * @return View
+     * Новое сообщение создается не в админки, а на фронте http://localhost/contact пользователем
      */
-    public function create(Message $message): view
+    public function create()
     {
-        //Зачем админу это, это делается через форму http://localhost/contact
+        //
     }
 
-    /**
-     * Сохраняем в БД отправленные данные через форму контактов http://localhost/contact
-     *
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    public function store(Request $request): Response
+    public function store()
     {
-        try {
-            $request->validate([
-                'name'      => ['required', 'string'],
-                'email'     => ['required', 'email'],
-                'massage'   => ['required', 'string']
-            ]);
-
-            //Найдем такого пользователя в БД
-            $findUser = User::firstWhere('email', $request->input('email'));
-
-            //если пользователь нашелся то добавляем запись в БД
-            if($findUser){
-                Message::create([
-                    'user_id' => $findUser->id,
-                    'content' => $request->input('massage'),
-                    'status_id' => 5,
-                ]);
-                return response("Сообщение отправлено!", 200);
-            }
-
-            //Если пользователя нет, то создадим его и добавим его сообщение
-            $faker = Factory::create('ru_RU');
-            $userAdd = User::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => $faker->password(6,20)
-            ]);
-
-            Message::create([
-                'user_id' => $userAdd->id,
-                'content' => $request->input('massage'),
-                'status_id' => 5,
-            ]);
-            return response("Сообщение отправлено!", 200);
-        }
-        catch (Exception $e) {
-            response ("Сообщение не отправлено!");
-        }
+        //
     }
 
     /**
@@ -123,28 +75,19 @@ class ContactController extends Controller
     /**
      * Обновляет данные в БД через редактирование в админке
      *
-     * @param Request $request
+     * @param UpdateContactRequest $request
      * @param Message $contact
      * @return RedirectResponse
      */
-    public function update(Request $request, Message $contact): RedirectResponse
+    public function update(UpdateContactRequest $request, Message $contact): RedirectResponse
     {
-        $request->validate([
-            'content' => ['required', 'string']
-        ]);
+        $contact_ = $contact->fill($request->validated())->save();
 
-        $contact = $contact->fill(
-            $request->only([
-                'status',
-                'content',
-            ])
-        )->save();
-
-        if($contact) {
+        if($contact_) {
             return redirect()->route('admin.contact.index')
-                ->with('success', 'Сообщение успешно сохранено');
+                ->with('success', __('messages.admin.contact.update.success'));
         }
-        return back()->withInput()->with('error', 'Не удалось сохранить сообщение');
+        return back()->withInput()->with('error', __('messages.admin.contact.update.error'));
     }
 
     /**
@@ -157,6 +100,6 @@ class ContactController extends Controller
     {
         $contact->where('id','=', $contact->id)->update(['status'=> 'delete']);
 
-        return redirect()->route('admin.contact.index')->with('success', 'Сообщение удаленно!');
+        return redirect()->route('admin.contact.index')->with('success', __('messages.admin.contact.destroy.success'));
     }
 }
