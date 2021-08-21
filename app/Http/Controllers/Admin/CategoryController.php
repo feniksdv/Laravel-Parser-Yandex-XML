@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreCategoryRequest;
+use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\News;
 use App\Models\Status;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -48,33 +47,19 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохраняем новую категорию в БД
      *
-     * @param Request $request
+     * @param StoreCategoryRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'status_id' => ['required', 'not_in:0']
-        ]);
-
-        $category = Category::create(
-            $request->only([
-                'status_id',
-                'title',
-                'content',
-                'seo_title',
-                'seo_description'
-            ])
-        )->save();
+        $category = Category::create($request->validated())->save();
 
         if($category) {
-            return redirect()->route('admin.categories.index')
-                ->with('success', 'Категория успешно создана');
+            return redirect()->route('admin.categories.index')->with('success', __('messages.admin.category.store.success'));
         }
-        return back()->withInput()->with('error', 'Не удалось создать категорию');
+        return back()->withInput()->with('error', __('messages.admin.category.store.error'));
     }
 
     /**
@@ -107,7 +92,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Показать форму для редактирования указанного ресурса.
+     * Показать форму для редактирования выбранной категории
      *
      * @param Category $category
      * @return View
@@ -126,33 +111,19 @@ class CategoryController extends Controller
     /**
      * Обновить категорию по нажатию на кнопку Сохранить
      *
-     * @param Request $request
+     * @param UpdateCategoryRequest $request
      * @param Category $category
      * @return RedirectResponse
      */
-    public function update(Request $request, Category $category): RedirectResponse
+    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
+        $category_ = $category->fill($request->validated())->save();
 
-        $request->validate([
-            'title' => ['required', 'string'],
-            'status_id' => ['required', 'not_in:0']
-        ]);
-
-        $category = $category->fill(
-            $request->only([
-                'status_id',
-                'title',
-                'content',
-                'seo_title',
-                'seo_description'
-            ])
-        )->save();
-
-        if($category) {
+        if($category_) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Категория успешно сохранена');
+                ->with('success', __('messages.admin.category.update.success'));
         }
-        return back()->withInput()->with('error', 'Не удалось сохранить категорию');
+        return back()->withInput()->with('error', __('messages.admin.category.update.error'));
     }
 
     /**
@@ -171,6 +142,6 @@ class CategoryController extends Controller
                 config('paginate.admin.categories')
             );
 
-        return redirect()->route('admin.categories.index')->with('success', 'Категория удаленна!');
+        return redirect()->route('admin.categories.index')->with('success', __('messages.admin.category.destroy.success'));
     }
 }

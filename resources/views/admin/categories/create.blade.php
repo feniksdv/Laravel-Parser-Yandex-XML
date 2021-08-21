@@ -28,26 +28,30 @@
                             <div class="card-header">
                                 <h3 class="card-title">Выбрать категорию</h3>
                             </div>
-                            @if($errors->any())
-                                @foreach($errors->all() as $error)
-                                    <div class="alert alert-danger">{{ $error }}</div>
-                                @endforeach
-                            @endif
                             @include('layouts.message')
                             <form action="{{ route('admin.categories.store') }}" method="POST">
                             @csrf
                             <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <select class="form-control" name="status_id">
+                                        <select class="form-control" name="status_id" id="status_id">
                                             <option value="0" selected>Выбрать статус</option>
                                             @foreach($listStatuses as $status)
                                                 <option value="{{ $status->id }}">{{ $status->name }}</option>
                                             @endforeach
+                                            @error('status_id')
+                                                <p class="text-danger b"><strong>{{ $message }}</strong></p>
+                                            @enderror
                                         </select>
+                                        @error('status_id')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Заголовок" name="title" value="{{ old('title') }}">
+                                        <input class="form-control" type="text" id="title" placeholder="Заголовок" name="title" value="{{ old('title') }}">
+                                        @error('title')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <textarea id="compose-textarea" class="form-control" name="content" style="height: 500px">{!! old('content') !!}</textarea>
