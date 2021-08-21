@@ -31,7 +31,7 @@ Route::group(['prefix'=>'contact'], function(){
 * * * * * */
 Route::group(['prefix'=>'order'], function(){
     Route::get('/', [OrderController::class, 'index'])->name('order');
-    Route::post('store', [OrderController::class, 'index'])->name('order.store');
+    Route::post('store', [OrderController::class, 'store'])->name('order.store');
 });
 
 
