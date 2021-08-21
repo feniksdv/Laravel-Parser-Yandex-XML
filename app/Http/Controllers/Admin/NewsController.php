@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreNewsRequest;
+use App\Http\Requests\Admin\UpdateNewsRequest;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\News;
@@ -53,37 +55,21 @@ class NewsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохраняем новую новость в БД
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreNewsRequest $request
      * @param News $news
      * @return RedirectResponse
      */
-    public function store(Request $request, News $news): RedirectResponse
+    public function store(StoreNewsRequest $request, News $news): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'category_id' => ['required', 'not_in:0'],
-            'status_id' => ['required', 'not_in:0'],
-        ]);
-
-        $news = $news->create(
-            $request->only([
-                'status_id',
-                'category_id',
-                'user_id',
-                'title',
-                'content',
-                'seo_title',
-                'seo_description'
-            ])
-        )->save();
+        $news = $news->create($request->validated())->save();
 
         if($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно сохранена');
+                ->with('success', __('messages.admin.news.store.success'));
         }
-        return back()->withInput()->with('error', 'Не удалось сохранить новость');
+        return back()->withInput()->with('error', __('messages.admin.news.store.error'));
     }
 
     /**
@@ -132,35 +118,19 @@ class NewsController extends Controller
     /**
      * Обновить новость по нажатию на кнопку Сохранить
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateNewsRequest $request
      * @param News $news
      * @return RedirectResponse
      */
-    public function update(Request $request, News $news): RedirectResponse
+    public function update(UpdateNewsRequest $request, News $news): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'category_id' => ['required', 'not_in:0'],
-            'status_id' => ['required', 'not_in:0'],
-        ]);
+        $news_ = $news->fill($request->validated())->save();
 
-        $news = $news->fill(
-            $request->only([
-                'status_id',
-                'category_id',
-                'user_id',
-                'title',
-                'content',
-                'seo_title',
-                'seo_description'
-            ])
-        )->save();
-
-        if($news) {
+        if($news_) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно сохранена');
+                ->with('success', __('messages.admin.news.update.success'));
         }
-        return back()->withInput()->with('error', 'Не удалось сохранить новость');
+        return back()->withInput()->with('error', __('messages.admin.news.update.error'));
     }
 
     /**
@@ -179,6 +149,6 @@ class NewsController extends Controller
                 config('paginate.admin.news')
             );
 
-        return redirect()->route('admin.news.index')->with('success', 'Новость удаленна!');
+        return redirect()->route('admin.news.index')->with('success', __('messages.admin.news.destroy.success'));
     }
 }

@@ -28,26 +28,24 @@
                             <div class="card-header">
                                 <h3 class="card-title">Добавить новость</h3>
                             </div>
-                            @if($errors->any())
-                                @foreach($errors->all() as $error)
-                                    <div class="alert alert-danger">{{ $error }}</div>
-                                @endforeach
-                            @endif
                             @include('layouts.message')
                             <form action="{{ route('admin.news.store') }}" method="POST">
                             @csrf
                             <!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <select class="form-control" name="status_id">
+                                        <select class="form-control" name="status_id" id="status_id">
                                             <option value="0">Выбрать статус</option>
                                             @foreach($listStatuses as $status)
                                                 <option value="{{ $status->id }}">{{ $status->name }}</option>
                                             @endforeach
                                         </select>
+                                        @error('status_id')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" name="category_id">
+                                        <select class="form-control" name="category_id" id="category_id">
                                             <option value="0">Выбрать категорию</option>
                                             @foreach($listCategory as $category)
                                                 @if($listNews->category_id === $category->id)
@@ -57,9 +55,12 @@
                                                 @endif
                                             @endforeach
                                         </select>
+                                        @error('category_id')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" name="user_id">
+                                        <select class="form-control" name="user_id" id="user_id">
                                             <option value="0">Выбрать автора</option>
                                             @foreach($listAuthors as $authors)
                                                 @if($listNews->user_id === $authors->user_id)
@@ -69,9 +70,15 @@
                                                 @endif
                                             @endforeach
                                         </select>
+                                        @error('user_id')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Заголовок" name="title" value="{{ ($errors->any()) ? old('title') : $listNews->title }}">
+                                        <input class="form-control" type="text" placeholder="Заголовок" id="title" name="title" value="{{ ($errors->any()) ? old('title') : $listNews->title }}">
+                                        @error('title')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <textarea id="compose-textarea" class="form-control" name="content" style="height: 500px">{!! ($errors->any()) ? old('content') : $listNews->content !!}</textarea>
