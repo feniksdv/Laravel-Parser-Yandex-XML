@@ -18,8 +18,22 @@ use \App\Http\Controllers\Admin\OrderController as AdminOrderController;
 * Фронт    *
 * * * * * */
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('contact', ContactController::class)->name('contact');
-Route::get('order', OrderController::class)->name('order');
+/* * * * * *
+* Контакты *
+* * * * * */
+Route::group(['prefix'=>'contact'], function(){
+    Route::get('/', [ContactController::class, 'index'])->name('contact');
+    Route::post('store', [ContactController::class, 'store'])->name('contact.store');
+});
+
+/* * * * * *
+* Заказ    *
+* * * * * */
+Route::group(['prefix'=>'order'], function(){
+    Route::get('/', [OrderController::class, 'index'])->name('order');
+    Route::post('store', [OrderController::class, 'index'])->name('order.store');
+});
+
 
 /* * * * * * *
 * Страницы  *

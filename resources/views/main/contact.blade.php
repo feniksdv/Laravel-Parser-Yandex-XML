@@ -15,27 +15,35 @@
                         </p>
                     </div>
                     <!-- contact-title-section end -->
-
-                    <form id="contactForm" class="row" action="{{ route('admin.contact.store') }}" method="POST">
+                    <form id="contactForm_" class="row" action="{{ route('contact.store') }}" method="POST">
                         @csrf
                         <!-- assets/php/contact.php -->
                         <div class="col-12 col-sm-6 mb-7">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Ваше имя*" value="{{ old('name') }}" />
+                            @error("name")
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="col-12 col-sm-6 mb-7">
                             <input type="text" class="form-control" id="email" name="email" placeholder="Ваш Email*" value="{{ old('email') }}" />
+                            @error("email")
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
-
                         <div class="col-12 mb-9">
                             <textarea class="form-control massage-control" name="massage" id="massage" cols="30" rows="10" placeholder="Ваше сообщение">{{ old('massage') }}</textarea>
+                            @error("massage")
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="col-12">
-                            <button id="contactSubmit" type="submit" class="btn btn-dark btn-hover-dark" data-complete-text="Well Done!">
+                            <button id="contactSubmit_" type="submit" class="btn btn-dark btn-hover-dark" data-complete-text="Well Done!">
                                 Отправить
                             </button>
                             <p class="form-message mt-3"></p>
                         </div>
                     </form>
+                    @include('layouts.message')
 
                 </div>
 
