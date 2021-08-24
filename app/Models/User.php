@@ -6,11 +6,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -57,9 +56,9 @@ class User extends Authenticatable
      * Обратная свзяь один к одному таблиц Costumers and Users
      * @return BelongsTo
      */
-    public function customer(): belongsTo
+    public function customer(): HasMany
     {
-        return $this->belongsTo(Customer::class, 'id', 'user_id');
+        return $this->hasMany(Customer::class, 'user_id', 'id');
     }
 
     /**

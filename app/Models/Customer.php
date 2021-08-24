@@ -12,13 +12,24 @@ class Customer extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'is_admin',
+        'is_author',
+        'tel',
+        'telegram',
+    ];
+    protected $casts = [
+        'is_admin' => 'boolean'
+    ];
+
     /**
      * Связь один к одному Costumer and User
-     * @return HasOne
+     * @return belongsTo
      */
-    public function user(): hasOne
+    public function user(): belongsTo
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 
     /**

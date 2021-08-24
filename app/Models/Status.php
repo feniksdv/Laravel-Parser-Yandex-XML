@@ -21,7 +21,7 @@ class Status extends Model
      */
     public function category(): belongsTo
     {
-        return $this->belongsTo(Category::class, 'id', 'status_id');
+        return $this->belongsTo(Category::class, 'status_id', 'id');
     }
 
     /**
@@ -30,7 +30,7 @@ class Status extends Model
      */
     public function news(): belongsTo
     {
-        return $this->belongsTo(News::class, 'id', 'status_id');
+        return $this->belongsTo(News::class, 'status_id', 'id');
     }
 
 }
