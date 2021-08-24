@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use \App\Http\Controllers\Admin\ContactController as AdminContactController;
 use \App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
+use \App\Http\Controllers\Account\IndexController as AccountController;
+
 /* * * * * *
 * Фронт    *
 * * * * * */
@@ -62,13 +64,19 @@ Route::group(['prefix' => 'news'], function() {
 /* * * * * *
 * Админка  *
 * * * * * */
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-    Route::get('/', DashboardController::class)->name('dashboard');
-    Route::resource('categories', AdminCategoryController::class);
-    Route::resource('news', AdminNewsController::class);
-    Route::resource('contact', AdminContactController::class);
-    Route::resource('order', AdminOrderController::class);
+Route::group(['middleware' => 'verified'], function (){
+    //Личный кабинет (Профиль пользователя)
+    Route::get('/account', AccountController::class)->name('account');
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
+        Route::get('/', DashboardController::class)->name('dashboard');
+        Route::resource('categories', AdminCategoryController::class);
+        Route::resource('news', AdminNewsController::class);
+        Route::resource('contact', AdminContactController::class);
+        Route::resource('order', AdminOrderController::class);
+    });
 });
+
+
 
 //чистим кеш
 Route::get('/clear', function () {
