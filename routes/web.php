@@ -13,8 +13,11 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use \App\Http\Controllers\Admin\ContactController as AdminContactController;
 use \App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use \App\Http\Controllers\Admin\UserController as AdminUserController;
 
 use \App\Http\Controllers\Account\IndexController as AccountController;
+use \App\Http\Controllers\Account\SaveFormProfileController as AccountControllerProfile;
+use \App\Http\Controllers\Account\SaveFormPasswordController as AccountControllerPassword;
 
 /* * * * * *
 * Фронт    *
@@ -65,14 +68,21 @@ Route::group(['prefix' => 'news'], function() {
 * Админка  *
 * * * * * */
 Route::group(['middleware' => 'verified'], function (){
+
     //Личный кабинет (Профиль пользователя)
-    Route::get('/account', AccountController::class)->name('account');
+    Route::group(['prefix' => 'account'], function (){
+        Route::get('/', AccountController::class)->name('account');
+        Route::post('/password/{password}', AccountControllerPassword::class)->name('account.save.form.password');
+        Route::post('/profile/{profile}', AccountControllerProfile::class)->name('account.save.form.profile');
+    });
+    //админка
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('news', AdminNewsController::class);
         Route::resource('contact', AdminContactController::class);
         Route::resource('order', AdminOrderController::class);
+        Route::resource('user', AdminUserController::class);
     });
 });
 

@@ -93,20 +93,17 @@
                                     <form action="{{ route('admin.news.destroy', ['news' => $news->id]) }}" method="post">
                                         @method('DELETE')
                                         @csrf
-                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.news.show', ['news' => $news->id]) }}">
-                                            <i class="fas fa-folder">
+                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.news.show', ['news' => $news->id]) }}">
+                                            <i class="fas fa-eye">
                                             </i>
-                                            Смотреть
                                         </a>
-                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.news.edit', ['news' => $news->id]) }}">
+                                        <a class="btn btn-info btn-sm" href="{{ route('admin.news.edit', ['news' => $news->id]) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
-                                            Править
                                         </a>
-                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $news->id }}">
+                                        <button class="btn btn-danger btn-sm silent-remove" type="submit" value="{{ $news->id }}">
                                             <i class="fas fa-trash">
                                             </i>
-                                            Удалить
                                         </button>
                                     </form>
                                 </td>

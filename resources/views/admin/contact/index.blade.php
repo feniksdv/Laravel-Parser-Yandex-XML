@@ -49,7 +49,7 @@
                             <th style="width: 30%">
                                 Контакты
                             </th>
-                            <th style="width: 50%" class="text-center">
+                            <th style="width: 30%" class="text-center">
                                 Сообщение
                             </th>
                             <th style="width: 10%" class="text-center">
@@ -70,29 +70,32 @@
                             <tr>
                                 <td>{{ $message->id }}</td>
                                 <td>{{ $message->user->name }}</td>
-                                <td>{{ $message->user->email ." | ". $message->customers[0]->tel}}</td>
+                                <td>
+                                    @if($message->user->email) {{ $message->user->email }} @else нет данных @endif
+                                    |
+                                    @if(!empty($order->customers[0])) {{ $message->customers[0]->tel }} @else нет данных @endif
+                                </td>
                                 <td>{{ mb_substr($message->content, 0, 100).'...' }}</td>
                                 <td>@if($message->updated_at) {{ $message->updated_at }} @else {{ now() }} @endif</td>
-                                <td>{{ $message->customers[0]->telegram }}</td>
+                                <td>
+                                    @if(!empty($message->customers[0])) {{ $message->customers[0]->telegram }} @else нет данных @endif
+                                </td>
                                 <td>{{ $message->status }}</td>
                                 <td>
                                     <form action="{{ route('admin.contact.destroy', ['contact' => $message->id]) }}" method="post">
                                         @method('DELETE')
                                         @csrf
-                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.contact.show', ['contact' => $message->id]) }}">
-                                            <i class="fas fa-folder">
+                                        <a class="btn btn-primary btn-sm" href="{{ route('admin.contact.show', ['contact' => $message->id]) }}">
+                                            <i class="fas fa-eye">
                                             </i>
-                                            Смотреть
                                         </a>
-                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.contact.edit', ['contact' => $message->id]) }}">
+                                        <a class="btn btn-info btn-sm" href="{{ route('admin.contact.edit', ['contact' => $message->id]) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
-                                            Править
                                         </a>
-                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $message->id }}">
+                                        <button class="btn btn-danger btn-sm silent-remove" type="submit" value="{{ $message->id }}">
                                             <i class="fas fa-trash">
                                             </i>
-                                            Удалить
                                         </button>
                                     </form>
                                 </td>

@@ -67,7 +67,11 @@
                             <tr>
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->users[0]->name }}</td>
-                                <td>{{ $order->users[0]->email ." | ". $order->customers[0]->tel}}</td>
+                                <td>
+                                    @if($order->users[0]->email) {{ $order->users[0]->email }} @else нет данных @endif
+                                     |
+                                    @if(!empty($order->customers[0])) {{ $order->customers[0]->tel }} @else нет данных @endif
+                               </td>
                                 <td>{{ mb_substr($order->content, 0, 100).'...' }}</td>
                                 <td>@if($order->updated_at) {{ $order->updated_at }} @else {{ now() }} @endif</td>
                                 <td>{{ $order->status }}</td>
@@ -75,20 +79,17 @@
                                     <form action="{{ route('admin.order.destroy', ['order' => $order->id]) }}" method="post">
                                         @method('DELETE')
                                         @csrf
-                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.order.show', ['order' => $order->id]) }}">
-                                            <i class="fas fa-folder">
+                                        <a class="btn btn-primary btn-sm " href="{{ route('admin.order.show', ['order' => $order->id]) }}">
+                                            <i class="fas fa-eye">
                                             </i>
-                                            Смотреть
                                         </a>
-                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.order.edit', ['order' => $order->id]) }}">
+                                        <a class="btn btn-info btn-sm" href="{{ route('admin.order.edit', ['order' => $order->id]) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
-                                            Править
                                         </a>
-                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $order->id }}">
+                                        <button class="btn btn-danger btn-sm silent-remove" type="submit" value="{{ $order->id }}">
                                             <i class="fas fa-trash">
                                             </i>
-                                            Удалить
                                         </button>
                                     </form>
                                 </td>

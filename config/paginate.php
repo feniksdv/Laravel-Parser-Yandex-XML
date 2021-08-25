@@ -12,5 +12,6 @@ return [
         'page' => 5,
         'message' => 5,
         'order' => 5,
+        'user' => 5,
     ]
 ];
