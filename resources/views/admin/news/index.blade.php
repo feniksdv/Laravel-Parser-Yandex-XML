@@ -73,7 +73,7 @@
                             <tr>
                                 <td>{{ $news->id }}</td>
                                 <td>{{ $news->title }}</td>
-                                <td>{{ $news->users->name }}</td>
+                                <td>@if(!is_null($news->users)) {{ $news->users->name }} @else нет данных @endif</td>
                                 <td>{{ $news->category->title }}</td>
                                 <td>{{ mb_substr($news->content, 0, 156).'...' }}</td>
                                 <td class="project-state">

@@ -18,7 +18,7 @@
                             <div class="blog-content">
                                 <a href="{{ route('news.show', ['news' => $news->id]) }}">
                                     <span class="blog-meta">
-                                        {{ $news->users->name }}
+                                        @if(!is_null($news->users)) {{ $news->users->name }} @else нет данных @endif
                                         -
                                         @if($news->updated_at) {{ $news->updated_at }} @else {{ now()->format('d-m-Y, H:m') }} @endif
                                     </span>

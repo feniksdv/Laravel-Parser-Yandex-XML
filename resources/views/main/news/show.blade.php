@@ -15,7 +15,7 @@
                     </div>
                     <!-- blog-details-thumb -->
                     <p class="blog-details-meta">
-                        {{ $listNews->users->name }}
+                        @if(!is_null($listNews->users)) {{ $listNews->users->name }} @else нет данных @endif
                         -
                         @if($listNews->updated_at) {{ $listNews->updated_at }} @else {{ now()->format('d-m-Y, H:m') }} @endif
                     </p>

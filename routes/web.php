@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
+use \App\Http\Controllers\SocialController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -62,6 +63,14 @@ Route::group(['prefix' => 'category'], function() {
 Route::group(['prefix' => 'news'], function() {
     Route::get('/', [NewsController::class, 'index'])->name('news');
     Route::get('/show/{news}', [NewsController::class, 'show'])->where('news', '\d+')->name('news.show');
+});
+
+/* * * * * * * * * * * * * * *
+* Авторизация через соц.сети *
+* * * * * * * * * * * * * * */
+Route::group(['middleware' => 'guest'], function (){
+    Route::get('/init/{socialAll}', [SocialController::class, 'init'])->name('init.social');
+    Route::get('/callback/{socialAll}', [SocialController::class, 'callback'])->name('callback.social');
 });
 
 /* * * * * *

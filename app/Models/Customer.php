@@ -18,6 +18,7 @@ class Customer extends Model
         'is_author',
         'tel',
         'telegram',
+        'avatar',
     ];
     protected $casts = [
         'is_admin' => 'boolean'

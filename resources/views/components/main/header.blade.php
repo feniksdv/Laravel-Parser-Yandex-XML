@@ -35,7 +35,12 @@
                     </li>
                     <li><a href="{{ route('contact') }}">Контакты</a></li>
                     @if(Auth::user())
-                        <li><a href="{{ route('logout') }}">Выйти</a></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="post">
+                                @csrf
+                                <button type="submit">Выйти</button>
+                            </form>
+                        </li>
                     @else
                         <li><a href="{{ route('login') }}">Войти</a></li>
                         <li><a href="{{ route('register') }}">Зарегистрироваться</a></li>
@@ -98,7 +103,12 @@
 
                             <ul class="sub-menu">
                                 @if(Auth::user())
-                                    <li class="sub-menu-item"><a class="sub-menu-link" href="{{ route('logout') }}">Выйти</a></li>
+                                    <li class="sub-menu-item">
+                                        <form action="{{ route('logout') }}" method="post">
+                                            @csrf
+                                            <button class="sub-menu-link" type="submit">Выйти</button>
+                                        </form>
+                                    </li>
                                 @else
                                     <li class="sub-menu-item"><a class="sub-menu-link" href="{{ route('login') }}">Войти</a></li>
                                     <li class="sub-menu-item"><a class="sub-menu-link" href="{{ route('register') }}">Зарегистрироваться</a></li>
