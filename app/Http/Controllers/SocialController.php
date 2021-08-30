@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Social;
-use Illuminate\Http\Request;
+use App\Http\Requests\Account\SocialServiceUpdateUserRequest;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialController extends Controller
@@ -13,8 +13,9 @@ class SocialController extends Controller
         return Socialite::driver($socialAll)->redirect();
     }
 
-    public function callback(Social $social, string $socialAll)
+    public function callback(Social $social, string $socialAll, SocialServiceUpdateUserRequest $request)
     {
-        return redirect($social->saveUser(Socialite::driver($socialAll)->user()));
+        $validation = $request->validated();
+        return redirect($social->saveUser($validation, Socialite::driver($socialAll)->user()));
     }
 }
