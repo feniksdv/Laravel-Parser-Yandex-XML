@@ -21,7 +21,7 @@
             <h3 class="widget-title">Категории</h3>
             <div class="widget-list">
                 <ul class="list-group list-group-flush">
-                    @forelse ($listCategory as $category)
+                @forelse ($listCategory as $category)
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <a href="{{ route('category.show', ['category' => $category]) }}">

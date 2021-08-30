@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\HomeController;
@@ -15,7 +16,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use \App\Http\Controllers\Admin\ContactController as AdminContactController;
 use \App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use \App\Http\Controllers\Admin\UserController as AdminUserController;
-
+use App\Http\Controllers\Admin\ParserController;
 use \App\Http\Controllers\Account\IndexController as AccountController;
 use \App\Http\Controllers\Account\SaveFormProfileController as AccountControllerProfile;
 use \App\Http\Controllers\Account\SaveFormPasswordController as AccountControllerPassword;
@@ -86,6 +87,7 @@ Route::group(['middleware' => 'verified'], function (){
     });
     //админка
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
+        Route::get('/parser', ParserController::class)->name('parser');
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('news', AdminNewsController::class);
