@@ -10,9 +10,8 @@ use Orchestra\Parser\Xml\Facade as XmlParser;
 
 class ParserService implements Parser
 {
-    public function getDate(array $urls): array
+    public function getDate(string $url): void
     {
-        foreach ($urls as $url) {
             $load = XmlParser::load($url);
 
             $data[] = $load->parse([
@@ -32,7 +31,7 @@ class ParserService implements Parser
                     'uses' => 'channel.item[title,link,guid,description,pubDate]'
                 ]
             ]);
-        }
-        return (app(SaveDataValueParser::class)->setTheParserValueToTheDB($data));
+
+         app(SaveDataValueParser::class)->setTheParserValueToTheDB($data);
     }
 }

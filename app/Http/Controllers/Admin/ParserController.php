@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Contracts\Parser;
 use App\Http\Controllers\Controller;
+use App\Jobs\NewsParsingJob;
+use App\Models\News;
+use App\Models\Resource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ParserController extends Controller
 {
@@ -14,14 +16,17 @@ class ParserController extends Controller
      *
      * @param Request $request
      * @param Parser $parser
-     * @return void
+     * @return string
      */
-    public function __invoke(Request $request, Parser $parser)
+    public function __invoke(Request $request, Parser $parser): string
     {
-        $urls = [
-            "https://news.yandex.ru/music.rss",
-            "https://news.yandex.ru/movies.rss",
-        ];
-        $parser->getDate($urls);
+        $urls = Resource::get('url');
+
+        foreach ($urls as $url) {
+            NewsParsingJob::dispatch($url->url);
+        }
+
+        return ("Парсинг поставлен в очередь");
+
     }
 }

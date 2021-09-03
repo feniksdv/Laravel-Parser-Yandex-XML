@@ -9,7 +9,7 @@ use App\Models\News;
 
 class SaveInDbValueDataParserService implements SaveDataValueParser
 {
-    public function setTheParserValueToTheDB(array $data): array
+    public function setTheParserValueToTheDB(array $data): void
     {
         //1. Если нет категории то создать её
         $categoriesTitleAll = Category::all('id','title')->toArray();

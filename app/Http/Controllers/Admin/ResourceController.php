@@ -94,15 +94,15 @@ class ResourceController extends Controller
      * @param Resource $resources
      * @return RedirectResponse
      */
-    public function update(UpdateResourceRequest $request, Resource $resources): RedirectResponse
+    public function update(UpdateResourceRequest $request, Resource $resource): RedirectResponse
     {
-        $url_ = $resources->fill($request->validated())->save();
+        $url_ = $resource->where('id','=', $resource->id)->update($request->validated());
 
         if($url_) {
             return redirect()->route('admin.resources.index')
-                ->with('success', __('messages.admin.resources.update.success'));
+                ->with('success', __('messages.admin.resource.update.success'));
         }
-        return back()->withInput()->with('error', __('messages.admin.resources.update.error'));
+        return back()->withInput()->with('error', __('messages.admin.resource.update.error'));
     }
 
     /**
@@ -115,6 +115,6 @@ class ResourceController extends Controller
     {
         Resource::where('id','=', $resource->id)->update(['status'=> 'off']);
 
-        return redirect()->route('admin.resources.index')->with('success', __('messages.admin.resources.destroy.success'));
+        return redirect()->route('admin.resources.index')->with('success', __('messages.admin.resource.destroy.success'));
     }
 }
