@@ -43,7 +43,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link @if(request()->routeIs('admin.categories.*')) active @endif">
+                        <a href="#" class="nav-link @if(request()->routeIs('admin.user.*')) active @endif">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
                                 Пользователи
@@ -55,6 +55,29 @@
                                 <a href="{{ route('admin.user.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Все пользователи</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link @if(request()->routeIs('admin.resources.*')) active @endif">
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>
+                                Url
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.resources.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Все Url</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.resources.create') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Добавить Url</p>
                                 </a>
                             </li>
                         </ul>

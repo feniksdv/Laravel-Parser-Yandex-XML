@@ -13,6 +13,7 @@ use \App\Http\Controllers\SocialController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\ResourceController as AdminResourceController;
 use \App\Http\Controllers\Admin\ContactController as AdminContactController;
 use \App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use \App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -89,6 +90,7 @@ Route::group(['middleware' => 'verified'], function (){
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
         Route::get('/parser', ParserController::class)->name('parser');
         Route::get('/', DashboardController::class)->name('dashboard');
+        Route::resource('resources', AdminResourceController::class);
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('news', AdminNewsController::class);
         Route::resource('contact', AdminContactController::class);
