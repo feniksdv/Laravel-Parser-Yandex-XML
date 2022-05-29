@@ -3,83 +3,103 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreContactRequest;
+use App\Http\Requests\Admin\UpdateContactRequest;
+use App\Models\Message;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ContactController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Выводит список всех сообщений
+     *
+     * @param Request $request
+     * @param Message $message
+     * @return view
      */
-    public function index(Request $request)
+    public function index(Request $request, Message $message): View
     {
-        return view('admin.contact.index', ['listMessages'=>$this->getMessages()]);
+        $listMessage = Message::with(['user','customers'])->paginate(
+            config('paginate.admin.message')
+        );
+
+        return view('admin.contact.index', [
+            'listMessages' => $listMessage
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
+     * Показывает форму по созданию нового сообщения
+     * Новое сообщение создается не в админки, а на фронте http://localhost/contact пользователем
      */
     public function create()
     {
         //
     }
 
+    public function store()
+    {
+        //
+    }
+
     /**
-     * Store a newly created resource in storage.
+     * Показать выбранное сообщение
      *
      * @param Request $request
-     * @return Response
+     * @param Message $contact
+     * @return View
      */
-    public function store(Request $request): Response
+    public function show(Request $request, Message $contact): view
     {
-        //Сохраняем в БД отправленные данные через форму контактов
-        return response($request->input('name').", сообщение отправлено!");
+        return view('admin.contact.show', [
+            'listMessage' => $contact
+        ]);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Показать форму дял редактирования выбранного сообщения
      *
      * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param Message $contact
+     * @return View
      */
-    public function update(Request $request, $id)
+    public function edit(Request $request, Message $contact): view
     {
-        //
+        return view('admin.contact.edit', [
+            'listContact' => $contact,
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Обновляет данные в БД через редактирование в админке
      *
-     * @param  int  $id
-     * @return Response
+     * @param UpdateContactRequest $request
+     * @param Message $contact
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function update(UpdateContactRequest $request, Message $contact): RedirectResponse
     {
-        //
+        $contact_ = $contact->fill($request->validated())->save();
+
+        if($contact_) {
+            return redirect()->route('admin.contact.index')
+                ->with('success', __('messages.admin.contact.update.success'));
+        }
+        return back()->withInput()->with('error', __('messages.admin.contact.update.error'));
+    }
+
+    /**
+     * Тихое удаление, не удаляем из БД данные а меня статус на delete
+     *
+     * @param Message $contact
+     * @return RedirectResponse
+     */
+    public function destroy(Message $contact): RedirectResponse
+    {
+        $contact->where('id','=', $contact->id)->update(['status'=> 'delete']);
+
+        return redirect()->route('admin.contact.index')->with('success', __('messages.admin.contact.destroy.success'));
     }
 }

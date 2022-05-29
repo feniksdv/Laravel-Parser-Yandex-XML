@@ -12,16 +12,18 @@
                             Статья
                         @elseif(request()->is('category'))
                             Рубрики
-                        @elseif(request()->routeIs('category.*'))
+                        @elseif(request()->routeIs('category.*') || request()->routeIs('admin.categories.*'))
                             @foreach($listCategory as $category)
-                                @if(request()->routeIs('category.show.'.$category["id"]).'/' and $id === $category["id"])
-                                    {{ $category['title'] }}
+                                @if($categoryId === $category->id)
+                                    {{ $category->title }}
                                 @endif
                             @endforeach
                         @elseif(request()->is('contact'))
                             Контакты
                         @elseif(request()->is('order'))
                             Услуги
+                        @elseif(request()->routeIs('page.*'))
+                            Блог
                         @else
                             Главная
                         @endif

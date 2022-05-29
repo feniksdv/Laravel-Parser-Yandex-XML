@@ -28,75 +28,86 @@
                             <div class="card-header">
                                 <h3 class="card-title">Добавить новость</h3>
                             </div>
+                            @include('layouts.message')
+                            <form action="{{ route('admin.news.store') }}" method="POST">
+                            @csrf
                             <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Название">
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="url:">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Статус</label>
-                                    <select id="inputStatus" class="form-control custom-select">
-                                        <option selected disabled>Выберите один</option>
-                                        <option>На доработку</option>
-                                        <option>Черновик</option>
-                                        <option>Опубликована</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputClientCompany">Категория</label>
-                                    <select id="inputStatus" class="form-control custom-select">
-                                        <option selected disabled>Выберите один</option>
-                                        @foreach($listCategories as $category)
-                                            <option>{{ $category['title'] }}</option>
-                                        @endforeach
-
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <textarea id="compose-textarea" class="form-control" style="height: 300px">
-                                      <h1><u>Heading Of Message</u></h1>
-                                      <h4>Subheading</h4>
-                                      <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain
-                                        was born and I will give you a complete account of the system, and expound the actual teachings
-                                        of the great explorer of the truth, the master-builder of human happiness. No one rejects,
-                                        dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know
-                                        how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again
-                                        is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain,
-                                        but because occasionally circumstances occur in which toil and pain can procure him some great
-                                        pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise,
-                                        except to obtain some advantage from it? But who has any right to find fault with a man who
-                                        chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that
-                                        produces no resultant pleasure? On the other hand, we denounce with righteous indignation and
-                                        dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so
-                                        blinded by desire, that they cannot foresee</p>
-                                      <ul>
-                                        <li>List item one</li>
-                                        <li>List item two</li>
-                                        <li>List item three</li>
-                                        <li>List item four</li>
-                                      </ul>
-                                      <p>Thank you,</p>
-                                      <p>John Doe</p>
-                                    </textarea>
-                                </div>
-                                <div class="form-group">
-                                    <div class="btn btn-default btn-file">
-                                        <i class="fas fa-paperclip"></i> Картинка
-                                        <input type="file" name="attachment">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <select class="form-control" name="status_id" id="status_id">
+                                            <option value="0">Выбрать статус</option>
+                                            @foreach($listStatuses as $status)
+                                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('status_id')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
                                     </div>
-                                    <p class="help-block">Max. 32MB</p>
+                                    <div class="form-group">
+                                        <select class="form-control" name="category_id" id="category_id">
+                                            <option value="0">Выбрать категорию</option>
+                                            @foreach($listCategory as $category)
+                                                @if($listNews->category_id === $category->id)
+                                                    <option value="{{ $category->id }}" selected >{{ $category->title }}</option>
+                                                @else
+                                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @error('category_id')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" name="user_id" id="user_id">
+                                            <option value="0">Выбрать автора</option>
+                                            @foreach($listAuthors as $authors)
+                                                @if($listNews->user_id === $authors->user_id)
+                                                    <option value="{{ $authors->user_id }}" selected >{{ $authors->user->name }}</option>
+                                                @else
+                                                    <option value="{{ $authors->user->id }}">{{ $authors->user->name }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @error('user_id')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" placeholder="Заголовок" id="title" name="title" value="{{ ($errors->any()) ? old('title') : $listNews->title }}">
+                                        @error('title')
+                                            <p class="text-danger"><strong>{{ $message }}</strong></p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="compose-textarea" class="form-control" name="content" style="height: 500px">{!! ($errors->any()) ? old('content') : $listNews->content !!}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="btn btn-default btn-file">
+                                            <i class="fas fa-paperclip"></i> Картинка
+                                            <input type="file" name="attachment">
+                                        </div>
+                                        <p class="help-block">Max. 32MB</p>
+                                    </div>
+                                    <div class="card-header">
+                                        <h3 class="card-title">SEO параметры</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" placeholder="Title" name="seo_title" value="{{ ($errors->any()) ? old('seo_title') : $listNews->seo_title }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" placeholder="Description" name="seo_description">{!! ($errors->any()) ? old('seo_description') : $listNews->seo_description !!}</textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="float-right">
-                                    <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i>Сохранить</button>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <div class="float-right">
+                                        <button type="submit" class="btn btn-default"><i class="fas fa-pencil-alt"></i>Сохранить</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- /.card-footer -->
+                                <!-- /.card-footer -->
+                            </form>
                         </div>
                         <!-- /.card -->
                     </div>

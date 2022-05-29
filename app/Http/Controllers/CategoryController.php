@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -10,38 +12,59 @@ class CategoryController extends Controller
     /**
      * Показать все категории
      *
+     * @param Request $request
      * @return View
      */
-    public function index() : view
+    public function index(Request $request) : view
     {
+        $sidebarCategory = Category::all();
+        $listNews = News::all();
+        $listCategory = Category::paginate(
+            config('paginate.main.categories')
+        );
+
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $sidebarCategory->count(); $i++) {
+            $countNewsInCategory[] = $listNews->where('category_id', '=', $i)->count();
+        }
+        unset($countNewsInCategory[0]);
+
+
         return view('main.category.index', [
-            'listCategory' => $this->getCategoryList(),
-            'id' => 0
+            'listCategory' => $listCategory,
+            'sidebarCategory' => $sidebarCategory,
+            'countNewsInCategory' => $countNewsInCategory,
+            'listNews' => $listNews
         ]);
     }
 
     /**
      * Показывает список новостей в конкретной категории
      *
-     * @param int $id
+     * @param Category $category
+     * @return View
      */
-    public function show(int $id)
+    public function show(Category $category) : view
     {
-        $newsList = [];
-        foreach($this->getNewsList() as $news) {
-            if($news['idCategory'] === $id) {
-                $newsList[] = $news;
-            }
-        }
+        $listNewsByIdCategory = News::with('users')->where('category_id', '=', $category['id'])
+        ->paginate(
+            config('paginate.main.news')
+        );
+        $listCategory = Category::all();
 
-        if(empty($newsList)) {
-            abort(404);
+        $countNewsInCategory = [];
+        for ($i=0; $i <= $listCategory->count(); $i++) {
+            $countNewsInCategory[] = News::where('category_id', '=', $i)->count();
         }
+        unset($countNewsInCategory[0]);
+
+        $categoryId = $category['id'];
 
         return view('main.category.show', [
-            'listNews' => $newsList,
-            'listCategory' => $this->getCategoryList(),
-            'id' => $id
+            'listNews' => $listNewsByIdCategory,
+            'listCategory' => $listCategory,
+            'countNewsInCategory' => $countNewsInCategory,
+            'categoryId' => $categoryId
         ]);
     }
 }

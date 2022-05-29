@@ -26,7 +26,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Список категорий</h3>
-
+                    @include('layouts.message')
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -49,36 +49,46 @@
                             <th style="width: 30%">
                                 Описание
                             </th>
-                            <th style="width: 10%" class="text-center">
+                            <th style="width: 5%">
+                                Статус
+                            </th>
+                            <th style="width: 5%" class="text-center">
                                 Дата добавления
                             </th>
-                            <th style="width: 20%">
+                            <th style="width: 5%" class="text-center">
+                                Тихое удаление
+                            </th>
+                            <th style="width: 10%">
                             </th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse($listCategories as $category)
                             <tr>
-                                <td>{{ $category['id'] }}</td>
-                                <td>{{ $category['title'] }}</td>
-                                <td>{{ $category['description'] }}</td>
-                                <td>{{ now()->format('d-m-Y H:m') }}</td>
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="{{ route('admin.categories.show', ['category' => $category['id']]) }}">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        Смотреть
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="{{ route('admin.categories.edit', ['category' => $category['id']]) }}">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Править
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('admin.categories.destroy', ['category' => $category['id']]) }}">
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Удалить
-                                    </a>
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->title }}</td>
+                                <td>{{ $category->content }}</td>
+                                <td>{{ optional($category->statuses[0])->name }}</td>
+                                <td>@if($category->updated_at) {{ $category->updated_at }} @else {{ now() }} @endif</td>
+                                <td>{{ $category->status }}</td>
+                                <td>
+                                    <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+
+                                        <a class="btn btn-primary btn-sm my-2 mx-2" href="{{ route('admin.categories.show', ['category' => $category->id]) }}">
+                                            <i class="fas fa-eye">
+                                            </i>
+                                        </a>
+                                        <a class="btn btn-info btn-sm my-2 mx-2" href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                        </a>
+                                        <button class="btn btn-danger btn-sm my-2 mx-2 silent-remove" type="submit" value="{{ $category->id }}">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -89,12 +99,13 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="align-self-center my-3">{{ $listCategories->links() }}</div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
-
         </section>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+{{--    <script type='text/javascript' src="{{ asset('backend/js/remove-silent.js') }}"></script>--}}
 @endsection

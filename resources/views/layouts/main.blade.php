@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8') }}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0') }}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Агрегатор новостей</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/images/favicon.ico') }}" />
@@ -14,8 +15,8 @@
     <!-- Modal -->
     <x-main.header></x-main.header>
     <!-- Banner Section Start -->
-    @if(request()->routeIs('news.*') || request()->routeIs('category.*'))
-        <x-main.baner :listCategory="$listCategory" :id="$id"></x-main.baner>
+    @if(request()->routeIs('news.*') || request()->routeIs('category.*') || request()->routeIs('admin.categories.*'))
+        <x-main.baner :listCategory="$listCategory" :categoryId="$categoryId"></x-main.baner>
     @else
         <x-main.baner></x-main.baner>
     @endif

@@ -24,12 +24,12 @@ class OrdersSeeder extends Seeder
      */
     public function getData() : array
     {
-        $faker = Factory::create();
+        $faker = Factory::create('ru_RU');
         $data = [];
         for($i=0; $i < 10; $i++) {
             $data[] = [
                 'user_id' => random_int(1,10),
-                'content' => $faker->text(),
+                'content' => $faker->realText(random_int(1000,5000)),
                 'status_id' => random_int(5,7),
             ];
         }

@@ -14,12 +14,16 @@
                         <img src="{{ asset('front/images/blog-details/1.png') }}" alt="img" />
                     </div>
                     <!-- blog-details-thumb -->
-                    <p class="blog-details-meta">Admin - {{ now()->format('d-m-Y, H:m') }}</p>
+                    <p class="blog-details-meta">
+                        @if(!is_null($listNews->users)) {{ $listNews->users->name }} @else нет данных @endif
+                        -
+                        @if($listNews->updated_at) {{ $listNews->updated_at }} @else {{ now()->format('d-m-Y, H:m') }} @endif
+                    </p>
                     <h3 class="blog-details-title">
-                        {{ $listNews['title'] }}
+                        {{ $listNews->title }}
                     </h3>
                     <p class="pb-2">
-                        {{ $listNews['description'] }}
+                        {{ $listNews->content }}
                     </p>
                     <h2>ОБРАЗЕЦ</h2>
                     <!-- blog-details-list start -->
@@ -195,7 +199,7 @@
                 </div>
             </div>
             <!-- blog-details-content -->
-            <x-main.sidebar :listCategory="$listCategory"/>
+            <x-main.sidebar :listCategory="$listCategory" :countNewsInCategory="$countNewsInCategory"/>
         </div>
     </div>
 </section>

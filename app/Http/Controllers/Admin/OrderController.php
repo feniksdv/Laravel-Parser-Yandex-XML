@@ -3,106 +3,102 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
+use App\Http\Requests\Admin\UpdateOrderRequest;
+use App\Models\Order;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 
 
 class OrderController extends Controller
 {
     /**
+     * Выводит весь список заказов
+     *
      * @param Request $request
-     * @return Application|Factory|View
+     * @param Order $order
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request, Order $order ): View
     {
-        return view('admin.order.index', ['listOrders'=>$this->getOrder()]);
+        $listOrders = Order::with(['users','customers'])->paginate(
+            config('paginate.admin.order')
+        );
+
+        return view('admin.order.index', [
+            'listOrders'=>$listOrders
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
+     * Форма для создания нового заказ в админке этого не делается,
+     * заказа создается пользователем на фронте http://localhost/order
      */
     public function create()
     {
         //
     }
 
+    public function store()
+    {
+       //
+    }
+
     /**
-     * Store a newly created resource in storage.
+     * Отображает выбранный заказ
+     *
+     * @param Order $order
+     * @return View
+     */
+    public function show(Order $order): View
+    {
+        return view('admin.order.show', [
+            'listOrder' => $order
+        ]);
+    }
+
+    /**
+     * Отображает форму для редактирования выбранного заказа
+     *
+     * @param Order $order
+     * @return View
+     */
+    public function edit(Order $order): View
+    {
+        return view('admin.order.edit', [
+            'listOrder' => $order,
+        ]);
+    }
+
+    /**
+     * Обновляет данные в БД по окончанию редактирования заказа
+     *
+     * @param UpdateOrderRequest $request
+     * @param Order $order
+     * @return RedirectResponse
+     */
+    public function update(UpdateOrderRequest $request, Order $order): RedirectResponse
+    {
+        $order_ = $order->fill($request->validated())->save();
+
+        if($order_) {
+            return redirect()->route('admin.order.index')
+                ->with('success', __('messages.admin.order.update.success'));
+        }
+        return back()->withInput()->with('error', __('messages.admin.order.update.error'));
+    }
+
+    /**
+     * Тихое удаление, не удаляем из БД данные а меня статус на delete
      *
      * @param Request $request
-     * @return Response
+     * @param Order $order
+     * @return RedirectResponse
      */
-    public function store(Request $request): Response
+    public function destroy(Request $request, Order $order): RedirectResponse
     {
-        //Сохраняем данные в файл, если тел. такой же то дописываем в конец файла
-        Storage::append(
-            "/public/{$request->input('tel')}.log",
-            $request->input('name')."\n".
-            $request->input('tel')."\n".
-            $request->input('email')."\n".
-            $request->input('massage')."\n
-            *********************************************************************"
-        );
-        return response($request->input('name').", Заказ обрабатывается, ожидайте!");
-    }
+        $order->where('id','=', $order->id)->update(['status'=> 'delete']);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param $id
-     * @return Application|Factory|View
-     */
-    public function destroy(Request $request, $id)
-    {
-        $dir = '/var/www/html/storage/app/public/';
-        $_files = scandir($dir);
-        unset($_files[0],$_files[1],$_files[2]);
-        $files = array_values($_files);
-
-        $path = $dir.$files[$id];
-        unlink($path);
-
-        return view('admin.order.index', ['listOrders'=>$this->getOrder()]);
+        return redirect()->route('admin.order.index')->with('success', __('messages.admin.order.destroy.success'));
     }
 }

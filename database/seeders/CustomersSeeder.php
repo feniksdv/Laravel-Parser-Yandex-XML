@@ -24,7 +24,7 @@ class CustomersSeeder extends Seeder
      */
     public function getData() : array
     {
-        $faker = Factory::create();
+        $faker = Factory::create('ru_RU');
         $data = [];
         for($i=0; $i < 10; $i++) {
             $data[] = [
@@ -32,7 +32,7 @@ class CustomersSeeder extends Seeder
                 'is_admin' => 0,
                 'is_author' => 0,
                 'tel' => $faker->phoneNumber(),
-                'telegram' => '@'.$faker->firstName(),
+                'telegram' => '@'.$faker->userName(),
             ];
         }
 
